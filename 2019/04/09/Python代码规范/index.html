@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Coding,Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Python 代码编程规范，对命名规范、代码注释、代码风格做一定的约束。">
+<meta name="keywords" content="Coding,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 代码规范">
+<meta property="og:url" content="https://liuph0119.github.io/2019/04/09/Python代码规范/index.html">
+<meta property="og:site_name" content="liuph&#39;s notes">
+<meta property="og:description" content="Python 代码编程规范，对命名规范、代码注释、代码风格做一定的约束。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-09T09:31:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 代码规范">
+<meta name="twitter:description" content="Python 代码编程规范，对命名规范、代码注释、代码风格做一定的约束。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuph0119.github.io/2019/04/09/Python代码规范/">
+
+
+
+
+
+  <title>Python 代码规范 | liuph's notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?197396c72319cffd8dab216e4f45a682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liuph's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Good memory than rotten written.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuph0119.github.io/2019/04/09/Python代码规范/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liuph">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuph's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Python 代码规范</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-09T17:17:16+08:00">
+                2019-04-09
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-09T17:31:27+08:00">
+                2019-04-09
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Handbook/" itemprop="url" rel="index">
+                    <span itemprop="name">Handbook</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/09/Python代码规范/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/09/Python代码规范/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/04/09/Python代码规范/" class="leancloud_visitors" data-flag-title="Python 代码规范">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  1.8k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8 分钟
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  Python 代码编程规范，对命名规范、代码注释、代码风格做一定的约束。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>updated: 09/04/2019.</p>
+</blockquote>
+<h1 id="命名规范"><a href="#命名规范" class="headerlink" title="命名规范"></a>命名规范</h1><h2 id="模块-文件"><a href="#模块-文件" class="headerlink" title="模块/文件"></a>模块/文件</h2><blockquote>
+<ul>
+<li>尽量使用<strong>小写命名</strong>，<strong>首字母保持小写</strong>，<strong>尽量不要用下划线</strong>(除非多个单词，且数量不多的情况)。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 示例</span></span><br><span class="line"><span class="keyword">import</span> decoder</span><br><span class="line"><span class="keyword">import</span> html_parser</span><br><span class="line"> </span><br><span class="line"><span class="comment"># 不推荐</span></span><br><span class="line"><span class="keyword">import</span> Decoder</span><br></pre></td></tr></table></figure>
+<h2 id="类型"><a href="#类型" class="headerlink" title="类型"></a>类型</h2><blockquote>
+<ul>
+<li><p>类名使用<strong>驼峰命名风格，首字母大写</strong>，<strong>私有类可用一个下划线开头</strong>。</p>
+</li>
+<li><p>将相关的类和顶级函数放在同一个模块里， 没必要限制一个类一个模块。</p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 类名用驼峰命名风格</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Farm</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">AnimalFarm</span><span class="params">(Farm)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 私有类加下划线</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_PrivateFarm</span><span class="params">(Farm)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="函数"><a href="#函数" class="headerlink" title="函数"></a>函数</h2><blockquote>
+<ul>
+<li>函数名<strong>一律小写</strong>，如有多个单词，用<strong>下划线隔开</strong>。</li>
+<li><strong>私有函数在函数前加一个下划线_</strong>。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 函数名，小写单词下划线隔开</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run_with_env</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Person</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="comment"># 私有函数加下划线</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_private_func</span><span class="params">()</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="变量名"><a href="#变量名" class="headerlink" title="变量名"></a>变量名</h2><blockquote>
+<ul>
+<li><p>变量名<strong>尽量小写</strong>， 如有多个单词，<strong>用下划线隔开</strong>。</p>
+</li>
+<li><p>常量采用<strong>全大写</strong>，如有多个单词，<strong>用下划线隔开</strong>。</p>
+</li>
+<li>为了说明变量的作用域，可以加前缀以示说明：</li>
+</ul>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">变量类型</th>
+<th style="text-align:center">前缀</th>
+<th style="text-align:center">示例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">整型</td>
+<td style="text-align:center">n_</td>
+<td style="text-align:center">n_count</td>
+</tr>
+<tr>
+<td style="text-align:center">浮点型</td>
+<td style="text-align:center">f_</td>
+<td style="text-align:center">f_rate</td>
+</tr>
+<tr>
+<td style="text-align:center">字符串</td>
+<td style="text-align:center">s_</td>
+<td style="text-align:center">s_input</td>
+</tr>
+<tr>
+<td style="text-align:center">局部</td>
+<td style="text-align:center">_</td>
+<td style="text-align:center">_temp</td>
+</tr>
+<tr>
+<td style="text-align:center">全局</td>
+<td style="text-align:center">g_</td>
+<td style="text-align:center">g_count</td>
+</tr>
+</tbody>
+</table>
+</div>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    n_count = <span class="number">0</span></span><br><span class="line">    s_school_name = <span class="string">''</span></span><br><span class="line">    MAX_CLIENT = <span class="number">100</span></span><br></pre></td></tr></table></figure>
+<h1 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h1><h2 id="代码注释"><a href="#代码注释" class="headerlink" title="代码注释"></a>代码注释</h2><h3 id="块注释"><a href="#块注释" class="headerlink" title="块注释"></a>块注释</h3><blockquote>
+<ul>
+<li>“#”号后空一格，段落间用空行分开（同样需要“#”号）。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这是块注释的第一句，还没结束。</span></span><br><span class="line"><span class="comment"># 这是块注释的第二句，还没结束。</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># 这是块注释的下一段，快结束了。</span></span><br></pre></td></tr></table></figure>
+<h3 id="行注释"><a href="#行注释" class="headerlink" title="行注释"></a>行注释</h3><blockquote>
+<ul>
+<li>至少使用两个空格和语句分开，注意不要使用无意义的注释。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x = x + <span class="number">1</span>  <span class="comment"># 行注释至少空两个空格</span></span><br></pre></td></tr></table></figure>
+<h3 id="提醒注释"><a href="#提醒注释" class="headerlink" title="提醒注释"></a>提醒注释</h3><blockquote>
+<ul>
+<li>在代码的关键部分(或比较复杂的地方), 能写注释的要尽量写注释。</li>
+<li>比较重要的注释段, 使用多个等号隔开, 可以更加醒目, 突出重要性。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># =====================================</span></span><br><span class="line"><span class="comment"># 请勿在此处添加 get post等app路由行为 !!!</span></span><br><span class="line"><span class="comment"># =====================================</span></span><br><span class="line"> </span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># <span class="doctag">TODO:</span> ADDA Segmentation Network 实现。</span></span><br><span class="line">    app.run()</span><br></pre></td></tr></table></figure>
+<h2 id="文档注释"><a href="#文档注释" class="headerlink" title="文档注释"></a>文档注释</h2><blockquote>
+<ul>
+<li>一般出现在模块头部、函数和类的头部。</li>
+<li>以 “”” 开头和结尾, 首行不换行, 如有多行, 末行必需换行。</li>
+<li>不限于中英文, 但不要中英文混用。</li>
+<li>模块、公有类、公有方法, 能写文档注释的, 应该尽量写文档注释。</li>
+<li>具体可参照以下示例。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"><span class="string">"""Example docstrings.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">This module demonstrates documentation as specified by the `Google Python</span></span><br><span class="line"><span class="string">Style Guide`_. Docstrings may extend over multiple lines. Sections are created</span></span><br><span class="line"><span class="string">with a section header and a colon followed by a block of indented text.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Example:</span></span><br><span class="line"><span class="string">    Examples can be given using either the ``Example`` or ``Examples``</span></span><br><span class="line"><span class="string">    sections. Sections support any reStructuredText formatting, including</span></span><br><span class="line"><span class="string">    literal blocks::</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">        $ python example_google.py</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Section breaks are created by resuming unindented text. Section breaks</span></span><br><span class="line"><span class="string">are also implicitly created anytime a new section starts.</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">he_normal</span><span class="params">(seed=None)</span>:</span></span><br><span class="line">    <span class="string">"""He normal initializer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    It draws samples from a truncated normal distribution centered on 0</span></span><br><span class="line"><span class="string">    with `stddev = sqrt(2 / fan_in)`</span></span><br><span class="line"><span class="string">    where `fan_in` is the number of input units in the weight tensor.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # Arguments</span></span><br><span class="line"><span class="string">        seed: A Python integer. Used to seed the random generator.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # Returns</span></span><br><span class="line"><span class="string">        An initializer.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # References</span></span><br><span class="line"><span class="string">        He et al., http://arxiv.org/abs/1502.01852</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Conv2D</span><span class="params">(_Conv)</span>:</span></span><br><span class="line">    <span class="string">"""2D convolution layer (e.g. spatial convolution over images).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    This layer creates a convolution kernel that is convolved</span></span><br><span class="line"><span class="string">    with the layer input to produce a tensor of</span></span><br><span class="line"><span class="string">    outputs. If `use_bias` is True,</span></span><br><span class="line"><span class="string">    a bias vector is created and added to the outputs. Finally, if</span></span><br><span class="line"><span class="string">    `activation` is not `None`, it is applied to the outputs as well.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    When using this layer as the first layer in a model,</span></span><br><span class="line"><span class="string">    provide the keyword argument `input_shape`</span></span><br><span class="line"><span class="string">    (tuple of integers, does not include the sample axis),</span></span><br><span class="line"><span class="string">    e.g. `input_shape=(128, 128, 3)` for 128x128 RGB pictures</span></span><br><span class="line"><span class="string">    in `data_format="channels_last"`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # Arguments</span></span><br><span class="line"><span class="string">        filters: Integer, the dimensionality of the output space</span></span><br><span class="line"><span class="string">            (i.e. the number of output filters in the convolution).</span></span><br><span class="line"><span class="string">        kernel_size: An integer or tuple/list of 2 integers, specifying the</span></span><br><span class="line"><span class="string">            height and width of the 2D convolution window.</span></span><br><span class="line"><span class="string">            Can be a single integer to specify the same value for</span></span><br><span class="line"><span class="string">            all spatial dimensions.</span></span><br><span class="line"><span class="string">        strides: An integer or tuple/list of 2 integers,</span></span><br><span class="line"><span class="string">            specifying the strides of the convolution</span></span><br><span class="line"><span class="string">            along the height and width.</span></span><br><span class="line"><span class="string">            Can be a single integer to specify the same value for</span></span><br><span class="line"><span class="string">            all spatial dimensions.</span></span><br><span class="line"><span class="string">            Specifying any stride value != 1 is incompatible with specifying</span></span><br><span class="line"><span class="string">            any `dilation_rate` value != 1.</span></span><br><span class="line"><span class="string">        padding: one of `"valid"` or `"same"` (case-insensitive).</span></span><br><span class="line"><span class="string">            Note that `"same"` is slightly inconsistent across backends with</span></span><br><span class="line"><span class="string">            `strides` != 1, as described</span></span><br><span class="line"><span class="string">            [here](https://github.com/keras-team/keras/pull/9473#issuecomment-372166860)</span></span><br><span class="line"><span class="string">        data_format: A string,</span></span><br><span class="line"><span class="string">            one of `"channels_last"` or `"channels_first"`.</span></span><br><span class="line"><span class="string">            The ordering of the dimensions in the inputs.</span></span><br><span class="line"><span class="string">            `"channels_last"` corresponds to inputs with shape</span></span><br><span class="line"><span class="string">            `(batch, height, width, channels)` while `"channels_first"`</span></span><br><span class="line"><span class="string">            corresponds to inputs with shape</span></span><br><span class="line"><span class="string">            `(batch, channels, height, width)`.</span></span><br><span class="line"><span class="string">            It defaults to the `image_data_format` value found in your</span></span><br><span class="line"><span class="string">            Keras config file at `~/.keras/keras.json`.</span></span><br><span class="line"><span class="string">            If you never set it, then it will be "channels_last".</span></span><br><span class="line"><span class="string">        dilation_rate: an integer or tuple/list of 2 integers, specifying</span></span><br><span class="line"><span class="string">            the dilation rate to use for dilated convolution.</span></span><br><span class="line"><span class="string">            Can be a single integer to specify the same value for</span></span><br><span class="line"><span class="string">            all spatial dimensions.</span></span><br><span class="line"><span class="string">            Currently, specifying any `dilation_rate` value != 1 is</span></span><br><span class="line"><span class="string">            incompatible with specifying any stride value != 1.</span></span><br><span class="line"><span class="string">        activation: Activation function to use</span></span><br><span class="line"><span class="string">            (see [activations](../activations.md)).</span></span><br><span class="line"><span class="string">            If you don't specify anything, no activation is applied</span></span><br><span class="line"><span class="string">            (ie. "linear" activation: `a(x) = x`).</span></span><br><span class="line"><span class="string">        use_bias: Boolean, whether the layer uses a bias vector.</span></span><br><span class="line"><span class="string">        kernel_initializer: Initializer for the `kernel` weights matrix</span></span><br><span class="line"><span class="string">            (see [initializers](../initializers.md)).</span></span><br><span class="line"><span class="string">        bias_initializer: Initializer for the bias vector</span></span><br><span class="line"><span class="string">            (see [initializers](../initializers.md)).</span></span><br><span class="line"><span class="string">        kernel_regularizer: Regularizer function applied to</span></span><br><span class="line"><span class="string">            the `kernel` weights matrix</span></span><br><span class="line"><span class="string">            (see [regularizer](../regularizers.md)).</span></span><br><span class="line"><span class="string">        bias_regularizer: Regularizer function applied to the bias vector</span></span><br><span class="line"><span class="string">            (see [regularizer](../regularizers.md)).</span></span><br><span class="line"><span class="string">        activity_regularizer: Regularizer function applied to</span></span><br><span class="line"><span class="string">            the output of the layer (its "activation").</span></span><br><span class="line"><span class="string">            (see [regularizer](../regularizers.md)).</span></span><br><span class="line"><span class="string">        kernel_constraint: Constraint function applied to the kernel matrix</span></span><br><span class="line"><span class="string">            (see [constraints](../constraints.md)).</span></span><br><span class="line"><span class="string">        bias_constraint: Constraint function applied to the bias vector</span></span><br><span class="line"><span class="string">            (see [constraints](../constraints.md)).</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # Input shape</span></span><br><span class="line"><span class="string">        4D tensor with shape:</span></span><br><span class="line"><span class="string">        `(batch, channels, rows, cols)`</span></span><br><span class="line"><span class="string">        if `data_format` is `"channels_first"`</span></span><br><span class="line"><span class="string">        or 4D tensor with shape:</span></span><br><span class="line"><span class="string">        `(batch, rows, cols, channels)`</span></span><br><span class="line"><span class="string">        if `data_format` is `"channels_last"`.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">    # Output shape</span></span><br><span class="line"><span class="string">        4D tensor with shape:</span></span><br><span class="line"><span class="string">        `(batch, filters, new_rows, new_cols)`</span></span><br><span class="line"><span class="string">        if `data_format` is `"channels_first"`</span></span><br><span class="line"><span class="string">        or 4D tensor with shape:</span></span><br><span class="line"><span class="string">        `(batch, new_rows, new_cols, filters)`</span></span><br><span class="line"><span class="string">        if `data_format` is `"channels_last"`.</span></span><br><span class="line"><span class="string">        `rows` and `cols` values might have changed due to padding.</span></span><br><span class="line"><span class="string">    """</span></span><br></pre></td></tr></table></figure>
+<h1 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h1><h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><blockquote>
+<ul>
+<li>一律采用<code>UTF-8</code>编码。</li>
+<li>文件头部建议加入 <code>#-*-coding:utf-8-*-</code>标识</li>
+</ul>
+</blockquote>
+<h2 id="缩进"><a href="#缩进" class="headerlink" title="缩进"></a>缩进</h2><blockquote>
+<ul>
+<li>使用<strong>4个空格</strong>，而非<code>TAB</code>。</li>
+</ul>
+</blockquote>
+<h2 id="行宽"><a href="#行宽" class="headerlink" title="行宽"></a>行宽</h2><blockquote>
+<ul>
+<li>建议<strong>每行代码不超过80个字符</strong>（参考PyCharm中的参考线），超过用 <code>\</code> 换行。</li>
+</ul>
+</blockquote>
+<h2 id="引号"><a href="#引号" class="headerlink" title="引号"></a>引号</h2><blockquote>
+<ul>
+<li>自然语言使用双引号<code>&quot;...&quot;</code>。</li>
+<li>代码常规字符用单引号<code>&#39;...&#39;</code>。</li>
+<li>正则表达式使用双引号<code>r&quot;...&quot;</code>。</li>
+<li>文档字符串（docstring）使用三个双引号<code>&quot;&quot;&quot;......&quot;&quot;&quot;</code>。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 自然字符串用双引号</span></span><br><span class="line">a = <span class="string">u"中山大学"</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 一般用单引号</span></span><br><span class="line">maps = &#123;<span class="string">'Guangdong'</span>: <span class="string">'Guangzhou'</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 正则表达式用双引号</span></span><br><span class="line">pat = re.compile(<span class="string">r"\d&#123;1,3&#125;\t\s.+?,"</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="空行"><a href="#空行" class="headerlink" title="空行"></a>空行</h2><blockquote>
+<ul>
+<li>类定义末尾空两行。</li>
+<li>类内函数之间空一行。</li>
+<li>类外函数之间空两行。</li>
+<li>函数内部逻辑相关的可以用空行间隔。</li>
+<li>多个相关的函数可用多个空行间隔。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span><span class="params">(object)</span>:</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func1</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func2</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    <span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+<h2 id="import"><a href="#import" class="headerlink" title="import"></a>import</h2><blockquote>
+<ul>
+<li>一条import写一行，多个import不要写到一行中去。</li>
+<li>建议import的优先级： python自带的模块 &gt; 第三方模块 &gt; 自定义模块。酶类模块之间用空格分开。</li>
+<li>不建议用相对引用，除了自己封装的库内。</li>
+<li>注意不要因为多个import引起的命名冲突。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line"><span class="keyword">from</span> mymodule <span class="keyword">import</span> core, utils</span><br></pre></td></tr></table></figure>
+<h2 id="空格"><a href="#空格" class="headerlink" title="空格"></a>空格</h2><blockquote>
+<ul>
+<li>二元运算符两边各空一格：<code>=, -, *, /, +=, -=, ==, &gt;, &lt;, &gt;=, &lt;=, in, is, not, and</code></li>
+<li>逗号<code>,</code>之后留一个空格。</li>
+<li>括号不用空格。</li>
+<li>函数的形参中，默认值等号两边不要加空格。</li>
+<li>不要强行为了对齐而空格。</li>
+<li>在中文注释中，英文字符左右各空一格。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">x = x * x + <span class="number">1</span></span><br><span class="line">c = (a + b) ** <span class="number">2</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span><span class="params">(a, c=<span class="number">5</span>)</span>:</span></span><br><span class="line">    <span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 这个注释中，使用 a 这个变量。</span></span><br></pre></td></tr></table></figure>
+<h2 id="换行缩进"><a href="#换行缩进" class="headerlink" title="换行缩进"></a>换行缩进</h2><blockquote>
+<ul>
+<li>第二行缩进到括号起始处。</li>
+<li>第二行缩进 4 个空格，适用于起始括号就换行处。</li>
+<li>使用反斜杠<code>\</code>换行时，<code>+</code> 和 <code>.</code> 等运算符应该出现在行末。</li>
+<li>严禁一行多句。</li>
+<li><code>if/for/while</code> 必须换行。</li>
+</ul>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">foo = long_function_name(var_one, var_two,</span><br><span class="line">                         var_three, var_four)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">long_function_name</span><span class="params">(</span></span></span><br><span class="line"><span class="function"><span class="params">        var_one, var_two, var_three,</span></span></span><br><span class="line"><span class="function"><span class="params">        var_four)</span>:</span></span><br><span class="line">    print(var_one)</span><br><span class="line">    </span><br><span class="line"><span class="keyword">print</span> (<span class="string">'Hello, '</span>\</span><br><span class="line">       <span class="string">'%s %s!'</span> %\</span><br><span class="line">       (<span class="string">'Harry'</span>, <span class="string">'Potter'</span>)</span><br><span class="line">      )</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Coding/" rel="tag"># Coding</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/12/C_C++编程规范/" rel="next" title="C/C++ 代码规范">
+                <i class="fa fa-chevron-left"></i> C/C++ 代码规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/04/10/机器学习-基础/" rel="prev" title="机器学习：基础">
+                机器学习：基础 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="liuph">
+            
+              <p class="site-author-name" itemprop="name">liuph</p>
+              <p class="site-description motion-element" itemprop="description">Machine Learning, Deep Learning, Spatiotemporal Data Mining</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/liuph0119" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liuph3@mail2.sysu.edu.cn" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#命名规范"><span class="nav-number">1.</span> <span class="nav-text">命名规范</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#模块-文件"><span class="nav-number">1.1.</span> <span class="nav-text">模块/文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类型"><span class="nav-number">1.2.</span> <span class="nav-text">类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数"><span class="nav-number">1.3.</span> <span class="nav-text">函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量名"><span class="nav-number">1.4.</span> <span class="nav-text">变量名</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#注释"><span class="nav-number">2.</span> <span class="nav-text">注释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#代码注释"><span class="nav-number">2.1.</span> <span class="nav-text">代码注释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#块注释"><span class="nav-number">2.1.1.</span> <span class="nav-text">块注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#行注释"><span class="nav-number">2.1.2.</span> <span class="nav-text">行注释</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#提醒注释"><span class="nav-number">2.1.3.</span> <span class="nav-text">提醒注释</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#文档注释"><span class="nav-number">2.2.</span> <span class="nav-text">文档注释</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码风格"><span class="nav-number">3.</span> <span class="nav-text">代码风格</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#编码"><span class="nav-number">3.1.</span> <span class="nav-text">编码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#缩进"><span class="nav-number">3.2.</span> <span class="nav-text">缩进</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#行宽"><span class="nav-number">3.3.</span> <span class="nav-text">行宽</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引号"><span class="nav-number">3.4.</span> <span class="nav-text">引号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空行"><span class="nav-number">3.5.</span> <span class="nav-text">空行</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#import"><span class="nav-number">3.6.</span> <span class="nav-text">import</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#空格"><span class="nav-number">3.7.</span> <span class="nav-text">空格</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#换行缩进"><span class="nav-number">3.8.</span> <span class="nav-text">换行缩进</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuph</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://liuph0119.github.io/2019/04/09/Python代码规范/';
+          this.page.identifier = '2019/04/09/Python代码规范/';
+          this.page.title = 'Python 代码规范';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz',
+        appKey: 'vJlPTJMK5wNXplzp2gavBJSu',
+        placeholder: 'I have something to say',
+        avatar:'retro',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz", "vJlPTJMK5wNXplzp2gavBJSu");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

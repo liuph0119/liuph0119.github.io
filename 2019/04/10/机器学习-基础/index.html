@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="对机器学习的整个框架的概览，包括过拟合/欠拟合/variance/bias等，以及模型的评估、统计检验、数据预处理、特征选择、多类分类、类别不均衡、优化算法等。">
+<meta name="keywords" content="机器学习">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习：基础">
+<meta property="og:url" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/index.html">
+<meta property="og:site_name" content="liuph&#39;s notes">
+<meta property="og:description" content="对机器学习的整个框架的概览，包括过拟合/欠拟合/variance/bias等，以及模型的评估、统计检验、数据预处理、特征选择、多类分类、类别不均衡、优化算法等。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/Snipaste_2019-03-19_15-38-20.png">
+<meta property="og:image" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/Snipaste_2019-03-19_14-38-02.png">
+<meta property="og:image" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/Snipaste_2018-11-13_00-48-08.png">
+<meta property="og:image" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/Snipaste_2018-11-13_01-06-37.png">
+<meta property="og:image" content="https://vimsky.com/wp-content/uploads/2015/08/Screen-Shot-2015-08-26-at-21.56.02.png">
+<meta property="og:updated_time" content="2019-04-10T09:50:03.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习：基础">
+<meta name="twitter:description" content="对机器学习的整个框架的概览，包括过拟合/欠拟合/variance/bias等，以及模型的评估、统计检验、数据预处理、特征选择、多类分类、类别不均衡、优化算法等。">
+<meta name="twitter:image" content="https://liuph0119.github.io/2019/04/10/机器学习-基础/Snipaste_2019-03-19_15-38-20.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuph0119.github.io/2019/04/10/机器学习-基础/">
+
+
+
+
+
+  <title>机器学习：基础 | liuph's notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?197396c72319cffd8dab216e4f45a682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liuph's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Good memory than rotten written.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuph0119.github.io/2019/04/10/机器学习-基础/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liuph">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuph's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">机器学习：基础</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-04-10T15:31:00+08:00">
+                2019-04-10
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-04-10T17:50:03+08:00">
+                2019-04-10
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/04/10/机器学习-基础/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/04/10/机器学习-基础/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/04/10/机器学习-基础/" class="leancloud_visitors" data-flag-title="机器学习：基础">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  13.4k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  52 分钟
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  对机器学习的整个框架的概览，包括过拟合/欠拟合/variance/bias等，以及模型的评估、统计检验、数据预处理、特征选择、多类分类、类别不均衡、优化算法等。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="方差-偏差"><a href="#方差-偏差" class="headerlink" title="方差 / 偏差"></a>方差 / 偏差</h1><p>模型的期望输出与真实标记的差别称为偏差（<code>bias</code>），即 <script type="math/tex">bias^2(x)=(\bar{f}(x)-y)^2</script></p>
+<p>对于某个测试集<script type="math/tex">x</script>，使用不同的训练集D学习会得到不同的预测输出，其方差为<script type="math/tex">var(x)=E[(f(x)-\bar{f}(x))^2]</script>，噪声为<script type="math/tex">\epsilon^2=E[(y_D-y)^2]</script>。（<script type="math/tex">y_D</script>为样本在数据中的标签，<script type="math/tex">y</script>为样本的绝对真实标签）<strong>泛化误差可以分解为偏差、方差和噪声之和</strong><script type="math/tex">E[f;D]=bias^2+var(x)+\epsilon^2</script>。</p>
+<ul>
+<li><strong>偏差</strong>度量的是学习算法的期望预测与真实结果的偏离程度，即体现学习算法本身的拟合能力；</li>
+<li><strong>方差</strong>度量了同样大小的训练集的变动所导致的学习性能的改变，即体现了数据扰动所造成的影响。</li>
+<li><strong>噪声</strong>反应了当前任务上任何学习算法所能达到的期望泛化误差下届，即刻画了学习问题本身的难度。</li>
+<li>偏差-方差分解说明<u>泛化误差是由学习算法的能力、数据的充分性和学习任务本身的难度共同决定的</u>。</li>
+</ul>
+<p>给定一个学习任务，在<strong>训练不足时</strong>，学习器拟合能力不足，训练数据的扰动不足以使得学习性能产生显著变化，此时<strong>偏差主导了泛化误差率</strong>；<br>随着<strong>训练程度加深</strong>，学习器拟合能力增强，数据扰动会被学到，<strong>方差主导泛化误差率</strong>；<br><strong>训练充足后</strong>，学习器拟合能力已经非常强，训练数据发生的轻微扰动都会引起学习器显著变化，如果训练数据自身的、非全局的特性被学到了，就会发生<strong>过拟合</strong>。<br><img src="/2019/04/10/机器学习-基础/Snipaste_2019-03-19_15-38-20.png" alt="Bias-Variance"></p>
+<hr>
+<h1 id="过拟合-欠拟合"><a href="#过拟合-欠拟合" class="headerlink" title="过拟合 / 欠拟合"></a>过拟合 / 欠拟合</h1><p>模型在训练集上的误差称为训练误差，或者经验误差；在新样本上的误差叫做泛化误差。</p>
+<p>但我们希望学习获得一个在新样本上表现良好的学习器，为此因该从训练集中学习得到普遍规律。当<strong>学习器在训练集上学得太好时，会将训练集中的噪声/自身分布特点作为一般规律，造成在新数据上预测效果差，泛化性能下降</strong>。这就是过拟合。欠拟合是指模型在训练集上效果都不好。</p>
+<p>导致过拟合的原因是学习能力太过强大，一般是由于模型太复杂、参数量太多引起的。一般可以通过以下方式减缓：</p>
+<ul>
+<li><p>数据方面</p>
+<blockquote>
+<ul>
+<li>更多的训练数据。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>模型方面</p>
+<blockquote>
+<ul>
+<li>简化模型<ul>
+<li>模型设置简化，例如将SVM的核函数从RBF换成线性核）；</li>
+<li>正则化（<code>L1</code>， <code>L2</code>）；</li>
+<li><code>Dropout</code>；</li>
+</ul>
+</li>
+<li><code>Batch Normalization</code>；</li>
+<li>提前停止训练模型；</li>
+<li>更优的激活函数（<code>sigmoid</code>-&gt;<code>relu</code>）；</li>
+<li>更优的优化器（SGD-&gt;Adam)；</li>
+<li>集成方法。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<p>欠拟合一般是指模型太过简单，或者学习不够彻底，可以选用更复杂的模型（例如决策树扩展分支）、训练更久（神经网络增加迭代次数）。</p>
+<hr>
+<h1 id="模型评估"><a href="#模型评估" class="headerlink" title="模型评估"></a>模型评估</h1><h2 id="Leave-one-out"><a href="#Leave-one-out" class="headerlink" title="Leave one out"></a>Leave one out</h2><p>对于<script type="math/tex">N</script>个样本，每次选择<script type="math/tex">N-1</script>个样本来训练数据，留1个样本来验证模型预测的好坏。</p>
+<p>此方法主要<strong>用于样本量非常少的情况</strong> ，比如对于普通适中问题，<script type="math/tex">N</script>小于50时，一般采用留一交叉验证。</p>
+<h2 id="Hold-Out"><a href="#Hold-Out" class="headerlink" title="Hold Out"></a>Hold Out</h2><p>随机的将样本数据分为互斥的两部分（比如： 70%的训练集，30%的测试集），然后用训练集来训练模型，在测试集上验证模型，作为泛化误差的估计。</p>
+<p>训练/测试数据集的划分要<strong>尽可能保持数据分布的一致性</strong>，一般采用分层采样来保持样本的类别比例相似。</p>
+<p>单次留出法受划分的是数据集影响很大，一般采用<strong>若干次随机划分、重复进行实验评估后取均值作为留出法的评估结果</strong>。<strong>一般用于简单的数据探索性分析。</strong></p>
+<blockquote>
+<p>问题：我们希望得到在全样本上训练的模型，采用大部分样本作为训练集，则测试集数目太少可能不够稳定；采用太少样本作为训练集，则训练的模型与全样本差距较大，保真性降低。目前没有完美的解决方法，一般是取2/3~4/5用于训练，其余作为测试。</p>
+</blockquote>
+<h2 id="K-Fold-Cross-Validation"><a href="#K-Fold-Cross-Validation" class="headerlink" title="K-Fold Cross-Validation"></a>K-Fold Cross-Validation</h2><p>K折交叉验证会把样本数据随机的分成k个大小相似的互斥子集，，每个子集都尽可能<strong>保持数据分布的一致性，可通过分层采样</strong>得到。依次选取1份作为测试集，剩下的k-1份做训练集，从而可进行k次训练和测试。返回这k次测试结果的均值。</p>
+<p><img src="/2019/04/10/机器学习-基础/Snipaste_2019-03-19_14-38-02.png" alt="K-Fold CV"></p>
+<p>k值影响较大，一般取值为10。<strong>用于深入探究数据规律。</strong></p>
+<p>单次划分为k折受划分方式影响较大，为了减小因为样本划分不同引起的差别，一般可以采用不同的划分方式划分p次，最终的评估结果是这p次k折交叉验证结果的均值，即“p次k折交叉验证”。</p>
+<h2 id="Bootstrap"><a href="#Bootstrap" class="headerlink" title="Bootstrap"></a>Bootstrap</h2><p>对于m个样本（m较小），每次在这m个样本中随机采集一个样本，放入训练集，采样完后把样本放回。这样重复采集m次，得到m个样本组成的训练集。当然，这m个样本中很有可能有重复的样本数据。同时，用没有被采样到的样本做测试集，进行交叉验证。</p>
+<p>由于训练集有重复数据，<strong>会改变数据的分布，因而训练结果会有估计偏差</strong>，因此，此种方法<strong>不是很常用，除非数据量真的很少</strong>，比如小于20个。</p>
+<h2 id="调参-模型上线"><a href="#调参-模型上线" class="headerlink" title="调参 / 模型上线"></a>调参 / 模型上线</h2><p>调参一般采用<strong>网格寻优</strong>，例如SVM的C和Gamma参数，分别设置每个参数的范围，采用一定的步长去遍历。在深度学习中，一般在范围内取随机数，进行随机搜索。深度学习的调参一般采用<strong>随机寻优</strong>。</p>
+<p>在模型评估和选择时，我们只使用了一部分数据进行训练，在模型评估和选择之后，一般需要<strong>将所有样本输入模型重新训练得到最终的模型</strong>。</p>
+<hr>
+<h1 id="度量指标"><a href="#度量指标" class="headerlink" title="度量指标"></a>度量指标</h1><h2 id="分类模型度量指标"><a href="#分类模型度量指标" class="headerlink" title="分类模型度量指标"></a>分类模型度量指标</h2><ul>
+<li>True Positives,TP：预测为正样本，实际也为正样本的样本数</li>
+<li>False Positives,FP：预测为正样本，实际为负样本的样本数</li>
+<li>True Negatives,TN：预测为负样本，实际也为负样本的样本数</li>
+<li>False Negatives,FN：预测为负样本，实际为正样本的样本数</li>
+</ul>
+<p><img src="/2019/04/10/机器学习-基础/Snipaste_2018-11-13_00-48-08.png" alt="Classification distribution"></p>
+<h3 id="精确率-查准率（Precision）"><a href="#精确率-查准率（Precision）" class="headerlink" title="精确率/查准率（Precision）"></a>精确率/查准率（Precision）</h3><p>定义在上图可以看出，是绿色半圆除以红色绿色组成的圆。预测为正样本的样本中，真正为正样本的比例。严格的数学定义如下： <script type="math/tex">P=\frac{TP}{TP+FP}</script> </p>
+<h3 id="召回率-查全率-Recall"><a href="#召回率-查全率-Recall" class="headerlink" title="召回率/查全率 (Recall)"></a>召回率/查全率 (Recall)</h3><p>定义也在图上能看出，是绿色半圆除以左边的长方形。实际存在的正样本中，被预测为正样本的比例。严格的数学定义如下： <script type="math/tex">R=\frac{TP}{TP+FN}</script> </p>
+<h3 id="F1-Score"><a href="#F1-Score" class="headerlink" title="F1-Score"></a>F1-Score</h3><p>F1值来综合评估精确率和召回率，它是精确率和召回率的调和均值。当精确率和召回率都高时,F1值也会高。严格的数学定义如下： <script type="math/tex">F_1=\frac{2PR}{P+R}</script></p>
+<h3 id="Fβ-Score"><a href="#Fβ-Score" class="headerlink" title="Fβ-Score"></a>Fβ-Score</h3><p>有时候我们对精确率和召回率并不是一视同仁，比如有时候我们更加重视精确率。我们用一个参数β来度量两者之间的关系。如果β&gt;1, 召回率有更大影响，如果β小于1,精确率有更大影响。自然，当β=1的时候，精确率和召回率影响力相同，和F1形式一样。含有度量参数β的F1我们记为Fβ, 严格的数学定义如下： <script type="math/tex">F_\beta = =\frac{(1+\beta^{2})PR}{(\beta^{2})P+R}</script></p>
+<h3 id="灵敏度-true-positive-rate-TPR"><a href="#灵敏度-true-positive-rate-TPR" class="headerlink" title="灵敏度(true positive rate, TPR)"></a>灵敏度(true positive rate, TPR)</h3><p>是实际正例中，正确识别的正例比例，它和召回率的表达式没有区别。严格的数学定义: <script type="math/tex">TPR=\frac {TP} {TP+FN}</script></p>
+<h3 id="特异度-false-positive-rate-FPR"><a href="#特异度-false-positive-rate-FPR" class="headerlink" title="特异度(false positive rate, FPR)"></a>特异度(false positive rate, FPR)</h3><p>是实际负例中，错误识别为正例的负例比例。严格的数学定义如下： <script type="math/tex">FPR=\frac{FP}{FP+TN}​</script></p>
+<h3 id="ROC-amp-AUC"><a href="#ROC-amp-AUC" class="headerlink" title="ROC &amp; AUC"></a>ROC &amp; AUC</h3><p>以TPR为y轴，以FPR为x轴，我们就直接得到了<code>RoC</code>(Receiver Operating Characteristic)曲线。从FPR和TPR的定义可以理解，TPR越高，FPR越小，我们的模型和算法就越高效。也就是画出来的RoC曲线越靠近左上越好。如下图左图所示。从几何的角度讲，RoC曲线下方的面积越大越大，则模型越优。所以有时候我们用RoC曲线下的面积，即<code>AUC</code>（Area Under Curve）值来作为算法和模型好坏的标准。</p>
+<p>在实际绘制ROC曲线时，由于数据样本有限，一般不能获得平滑的曲线。具体方法为：学习器对样本预测概率，按照预测为正例的概率将其从大到小排序。将分类阈值依次设置为每个样例的预测值，依次将每个样本划为正例，分别计算TPR和FPR，绘制ROC曲线。初始点坐标为(0, 0)，假设前一个点坐标为<script type="math/tex">(x, y)</script>，如果当前正例为真正例，对应标记点为<script type="math/tex">(x, y+\frac{1}{m^+})</script>；若为假正例，则标记点为<script type="math/tex">(x+\frac{1}{m^-}, y)</script>。</p>
+<p><img src="/2019/04/10/机器学习-基础/Snipaste_2018-11-13_01-06-37.png" alt="ROC-AUC"></p>
+<p>以精确率(Precision)为y轴，以召回率(Recall)为x轴，我们就得到了PR曲线。仍然从精确率和召回率的定义可以理解，精确率越高，召回率越高，我们的模型和算法就越高效。也就是画出来的PR曲线越靠近右上越好。如上图右图所示。使用RoC曲线和PR曲线，我们就能很方便的评估我们的模型的分类能力的优劣了。</p>
+<h3 id="Kappa系数"><a href="#Kappa系数" class="headerlink" title="Kappa系数"></a>Kappa系数</h3><script type="math/tex; mode=display">kappa=\frac{p_o-p_e}{1-p_e}</script><p>其中 <script type="math/tex">p_o</script>为总体精度，即混淆矩阵对角线上元素之和所占的比例， <script type="math/tex">p_e</script>为分类一致性指数，计算公式为：</p>
+<script type="math/tex; mode=display">p_o=\frac{\sum_{i=1}^{c}x_{ii}}{N}</script><script type="math/tex; mode=display">p_c=\frac{\sum_{i=1}^c(x_{i+}+x_{+i})}{N^2}</script><p><code>kappa = 1</code>： 两次判断完全一致<br><code>kappa&gt;=0.75</code> ：比较满意的一致程度<br><code>kappa&lt;0.4</code> ：不够理想的一致程度</p>
+<h2 id="回归模型度量指标"><a href="#回归模型度量指标" class="headerlink" title="回归模型度量指标"></a>回归模型度量指标</h2><h3 id="Mean-Squared-Error-MSE"><a href="#Mean-Squared-Error-MSE" class="headerlink" title="Mean Squared Error (MSE)"></a>Mean Squared Error (MSE)</h3><script type="math/tex; mode=display">MSE(y, \hat{y}) = \frac{1}{n}\sum_{i=0}^{n-1}(y_i-\hat{y}_i^2)</script><h3 id="Mean-Squared-Log-Error-MSLE"><a href="#Mean-Squared-Log-Error-MSLE" class="headerlink" title="Mean Squared Log Error (MSLE)"></a>Mean Squared Log Error (MSLE)</h3><script type="math/tex; mode=display">MSLE(y, \hat{y}) = \frac{1}{n}\sum_{i=0}^{n-1}(ln(1+y_i)-ln(1+\hat{y}_i))^2</script><h3 id="Mean-Absolute-Error-MAE"><a href="#Mean-Absolute-Error-MAE" class="headerlink" title="Mean Absolute Error (MAE)"></a>Mean Absolute Error (MAE)</h3><script type="math/tex; mode=display">MAE(y, \hat{y}) = \frac{1}{n}\sum_{i=0}^{n-1}|y_i-\hat{y}_i|</script><h3 id="Median-Absolute-Error-MedAE"><a href="#Median-Absolute-Error-MedAE" class="headerlink" title="Median Absolute Error (MedAE)"></a>Median Absolute Error (MedAE)</h3><script type="math/tex; mode=display">MedAE(y, \hat{y}) = median(|y_0 - \hat{y}_0|,\ldots, |y_{n-1}, \hat{y}_{n-1}|)</script><h3 id="Root-Mean-Square-Error-RMSE"><a href="#Root-Mean-Square-Error-RMSE" class="headerlink" title="Root Mean Square Error (RMSE)"></a>Root Mean Square Error (RMSE)</h3><script type="math/tex; mode=display">RMSE(y, \hat{y}) = \sqrt{\frac{\sum_{i=0}^{n-1}(y_i-\hat{y}_i)^2}{n}}​</script><script type="math/tex; mode=display">RMSE=\sqrt{MSE}</script><h3 id="R-2"><a href="#R-2" class="headerlink" title="$R^2$"></a>$R^2$</h3><script type="math/tex; mode=display">R^2(y, \hat{y}) = 1 - \frac{\sum_{i=0}^{n-1}(y_i - \hat{y}_i)^2} {\sum_{i=0}^{n-1}(y_i - \bar{y})^2}​</script><script type="math/tex; mode=display">\bar{y} = \frac{1}{n}\sum_{i=0}^{n-1}y_i</script><h3 id="Explained-Variance-Score-EV"><a href="#Explained-Variance-Score-EV" class="headerlink" title="Explained Variance Score (EV)"></a>Explained Variance Score (EV)</h3><script type="math/tex; mode=display">EV(y, \hat{y}) = 1-\frac{var({y-\hat{y})}}{var{(y)}}</script><p> $var(x)$表示 $x$ 的方差。 ​$EV$ 值越接近1.0表明回归效果越好。</p>
+<h3 id="Pearson-相关系数"><a href="#Pearson-相关系数" class="headerlink" title="Pearson 相关系数"></a>Pearson 相关系数</h3><p>用欧式距离（向量间的距离）来衡量向量的相似度，但欧式距离无法考虑不同变量间取值的量级差异。<strong>在数据标准化（<script type="math/tex">\mu=0, \sigma=1​</script> ）后，Pearson相关性系数、Cosine相似度、欧式距离的平方可认为是等价的</strong>。</p>
+<p>皮尔逊相关系数为两组变量X和Y之间的协方差与标准差的比值</p>
+<script type="math/tex; mode=display">\rho_{xy}=\frac{cov(x,y)}{\sqrt{D(x)}\sqrt{D(y)}}​</script><p>输出范围为-1到+1, 0代表无相关性，负值为负相关，正值为正相关。</p>
+<script type="math/tex; mode=display">r=\frac{\sum_{i=1}^{n}(x_i-\bar{x})(y_i-\bar{y})}{\sqrt{\sum_{i=1}^n(x_i-\bar{x})^2}{\sqrt{\sum_{i=1}^n(y_i-\bar{y})^2}}}</script><blockquote>
+<p>适用于标准差都不为0，变量间为线性，总体呈正态分布，观测对之间相互独立。</p>
+</blockquote>
+<h2 id="聚类模型度量指标"><a href="#聚类模型度量指标" class="headerlink" title="聚类模型度量指标"></a>聚类模型度量指标</h2><p>对于数据集 $D(x_1, x_2, \cdots, x_m)$，假定通过聚类得到的簇划分为$C=\lbrace c_1, c_2,\cdots,c_k \rbrace$，参考模型给出的簇划分为$C=\lbrace c_1^\ast, c_2^\ast,\cdots,c_s^\ast\rbrace $。令$\lambda$和$\lambda^\ast$分别为与$C$和$C^\ast$对应的簇标记向量。</p>
+<p>定义$a=|SS|, SS=\lbrace (x_i, x_j)|\lambda_i=\lambda_j, \lambda_i^\ast=\lambda_j^\ast, i&lt; j \rbrace$,<br>$b=|SD|, SD=\lbrace (x_i, x_j)|\lambda_i=\lambda_j, \lambda_i^\ast\neq\lambda_j^\ast, i&lt; j \rbrace$,<br>$c=|DS|, DS=\lbrace (x_i, x_j)|\lambda_i\neq\lambda_j, \lambda_i^\ast=\lambda_j^\ast, i&lt; j \rbrace$,<br>$d=|DD|, DD=\lbrace (x_i, x_j)|\lambda_i\neq\lambda_j, \lambda_i^\ast\neq\lambda_j^\ast, i&lt; j \rbrace$.</p>
+<p>因此有$a+c+c+d=\frac{m(m-1)}{2}$</p>
+<h3 id="Jaccard-Coefficient-JC"><a href="#Jaccard-Coefficient-JC" class="headerlink" title="Jaccard Coefficient (JC)"></a>Jaccard Coefficient (JC)</h3><ul>
+<li><p>计算公式为$JC=\frac{a}{a+b+c}$，$JC$越大聚类效果越好。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Fowlkes-and-Mallows-Index-FMI"><a href="#Fowlkes-and-Mallows-Index-FMI" class="headerlink" title="Fowlkes and Mallows Index (FMI)"></a>Fowlkes and Mallows Index (FMI)</h3><ul>
+<li><p>计算公式$FMI=\sqrt{\frac{a}{a+b} \cdot \frac{a}{a+c}}$，$FMI$越大聚类效果越好。</p>
+</li>
+<li><p>取值范围[0, 1]。</p>
+</li>
+<li><p><code>scikit-learn</code>中的实现API为<code>metrics.fowlkes_mallows_score(labels_true, labels_pred)</code>。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Rand-Index-RI"><a href="#Rand-Index-RI" class="headerlink" title="Rand Index (RI)"></a>Rand Index (RI)</h3><ul>
+<li><p>计算公式为$RI=\frac{2(a+d))}{m(m-1)}$，$RI$越大聚类效果越好。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Davies-Bouldin-Index-DBI"><a href="#Davies-Bouldin-Index-DBI" class="headerlink" title="Davies-Bouldin Index (DBI)"></a>Davies-Bouldin Index (DBI)</h3><ul>
+<li><p>计算公式: $DBI=\frac{1}{k}\sum_{i=1}^k\max_{i\neq j} (\frac{avg(C_i)+avg(C_j)}{d_{cen}(\mu_i, \mu_j)})$</p>
+</li>
+<li><p>这里$avg(C_i)​$表示簇$C_i​$内样本间的平均距离，$d_{cen}(\mu_i, \mu_j)​$表示簇$C_i​$和$C_j​$中心点之间的距离，$\mu_i​$为簇$C_i​$的中心点。$DBI​$越小聚类效果越好。</p>
+</li>
+<li><p><code>scikit-learn</code>中的实现API为<code>metrics.davies_bouldin_score(X, label)</code>。</p>
+</li>
+<li><blockquote>
+<p>特点：相比于Silhouette指数，计算更简单；无需参考标签数据。</p>
+<p>缺点：对于凸簇？？数据而言，DBI指数相对于其他指数会偏高，例如对于DBSCAN的聚类结果；质心距离的使用限制了度量欧氏空间的距离；较高的值并不意味着效果好。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Dunn-Index-DI"><a href="#Dunn-Index-DI" class="headerlink" title="Dunn Index (DI)"></a>Dunn Index (DI)</h3><ul>
+<li><p>计算公式为$DI=\min_{1 \le i \le k}{\min_{j\neq i}(\frac{d_{min}(C_i, C_j)}{max_{i \le l\le k}diam(C_l)})}$</p>
+</li>
+<li><p>这里$d_{min}(C_i, C_j)​$为簇$C_i​$和$C_j​$最近样本之间的距离，$diam(C_l)​$为簇$C_l​$内样本间的最远距离。$DI​$越大聚类效果越好。</p>
+</li>
+<li><blockquote>
+<p>特点：无需参考标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Adjusted-Rand-index-ARI"><a href="#Adjusted-Rand-index-ARI" class="headerlink" title="Adjusted Rand index (ARI)"></a>Adjusted Rand index (ARI)</h3><ul>
+<li><p>计算公式为$ARI=\frac{RI-E[RI]}{max(RI)-E[RI]}$</p>
+</li>
+<li><p>取值范围为[-1, 1]，值越大聚类效果越好。</p>
+</li>
+<li><p><code>scikit-learn</code>中的实现API为<code>metrics.adjusted_rand_score(labels_true, labels_pred)</code>。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Mutual-Information-MI"><a href="#Mutual-Information-MI" class="headerlink" title="Mutual Information (MI)"></a>Mutual Information (MI)</h3><ul>
+<li><p>取值范围[0, 1]</p>
+</li>
+<li><p><code>scikit-learn</code>中的实现API为<code>metrics.mutual_info_score(labels_true, labels_pred)</code>、<code>metrics.adjusted_mutual_info_score(labels_true, labels_pred)</code>和<code>metrics.normalized_mutual_info_score(labels_true, labels_pred)</code>。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="同质性-完整性-和-V-measure"><a href="#同质性-完整性-和-V-measure" class="headerlink" title="同质性, 完整性 和 V-measure"></a>同质性, 完整性 和 V-measure</h3><ul>
+<li><p>同质性，意思为一簇中只包含一类样本；完整性意思为同一类样本位于同一簇中。V-measure即为两者均值。</p>
+</li>
+<li><p>取值范围[0, 1]</p>
+</li>
+<li><p><code>scikit-learn</code>中实现API为<code>metrics.homogeneity_score(labels_true, labels_pred)</code>、<code>completeness_score(labels_true, labels_pred)</code>和<code>v_measure_score(labels_true, labels_pred)</code>，以及一个复合的API<code>homogeneity_completeness_v_measure(labels_true, labels_pred)</code>。</p>
+</li>
+<li><blockquote>
+<p>缺点：需要先验的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Silhouette-Coefficient"><a href="#Silhouette-Coefficient" class="headerlink" title="Silhouette Coefficient"></a>Silhouette Coefficient</h3><ul>
+<li><p>计算公式为$s=\frac{b-a}{max(a, b)}$，这里a表示某个样本和其同簇内其他样本的距离；b表示某个样本和其他临近簇内样本的距离。最后取所有样本$Silhouette$系数的均值作为总的指标。</p>
+</li>
+<li><p>取值范围[-1, 1]。</p>
+</li>
+<li><p><code>scikit-learn</code>中实现API为<code>metrics.silhouette_score(X, labels, metric=&#39;euclidean&#39;)</code></p>
+</li>
+<li><blockquote>
+<p>缺点：对于凸簇？？数据而言，DBI指数相对于其他指数会偏高，例如对于DBSCAN的聚类结果</p>
+<p>优点：无需参考的标签数据</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="Calinski-Harabaz-Index"><a href="#Calinski-Harabaz-Index" class="headerlink" title="Calinski-Harabaz Index"></a>Calinski-Harabaz Index</h3><ul>
+<li><p><code>scikit-learn</code>中实现API为<code>metrics.calinski_harabaz_score(X, labels)</code></p>
+</li>
+<li><blockquote>
+<p>优点：无需参考标签数据；计算快速</p>
+<p>缺点：对于凸簇？？数据而言，DBI指数相对于其他指数会偏高，例如对于DBSCAN的聚类结果</p>
+</blockquote>
+</li>
+</ul>
+<p>因此，综上所述，<strong>在没有参考标签的情况下，可用的聚类评价指标有：Davies-Bouldin Index, Dunn Index, Silhouette Coefficient, 和 Calinski-Harabaz Index</strong>。</p>
+<h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><h3 id="0-1-损失函数"><a href="#0-1-损失函数" class="headerlink" title="0/1 损失函数"></a>0/1 损失函数</h3><script type="math/tex; mode=display">f(x)= \begin{cases} 1, & \text{if Y ≠ f(x)} \\ 0, & \text{else} \end{cases}</script><h3 id="平方损失函数"><a href="#平方损失函数" class="headerlink" title="平方损失函数"></a>平方损失函数</h3><script type="math/tex; mode=display">L(Y, f(X)) = (Y-f(X))^2</script><h3 id="绝对损失函数"><a href="#绝对损失函数" class="headerlink" title="绝对损失函数"></a>绝对损失函数</h3><script type="math/tex; mode=display">L(Y, f(X)) = |Y-f(X)|</script><h3 id="交叉熵损失函数"><a href="#交叉熵损失函数" class="headerlink" title="交叉熵损失函数"></a>交叉熵损失函数</h3><p><code>Cross-entropy</code>，<strong>常用于sigmoid函数的损失函数</strong>，在神经网络训练中，假设模型的输出值为a，真实值为y，则<script type="math/tex">CE=-\frac{1}{m}\sum_{j=1}^m[ylna+(1-y)ln(1-a)]</script>。</p>
+<p>CE特性：非负性；当a和y接近时，CE接近于0；在更新参数时，权重的更新只与误差有关（下式），<strong>可以克服平方差损失函数更新权重过慢的问题</strong>（sigmoid在激活值很大时导数非常小，导致参数更新非常慢），加速模型训练。</p>
+<script type="math/tex; mode=display">\frac{\partial {CE}}{\partial {w_j}}=\frac{1}{m}\sum_{j=1}^mx_j(\sigma(z)-y)​</script><script type="math/tex; mode=display">\frac{\partial {CE}}{\partial {b_j}}=\frac{1}{m}\sum_{j=1}^m(\sigma(z)-y)</script><h3 id="对数似然损失函数"><a href="#对数似然损失函数" class="headerlink" title="对数似然损失函数"></a>对数似然损失函数</h3><p><code>Log-likelihood cost</code>，<strong>对数似然函数常用来作为softmax回归的代价函数</strong>，深度学习中更普遍的做法是将softmax作为最后一层，此时常用的是代价函数是log-likelihood cost。其实这两者是一致的，logistic回归用的就是sigmoid函数，softmax回归是logistic回归的多类别推广。log-likelihood代价函数在二类别时就可以化简为交叉熵代价函数的形式。详情：<a href="http://deeplearning.stanford.edu/wiki/index.php/Softmax%E5%9B%9E%E5%BD%92#.E4.BB.A3.E4.BB.B7.E5.87.BD.E6.95.B0" target="_blank" rel="noopener">UFLDL教程Softmax回归</a></p>
+<script type="math/tex; mode=display">L(Y, P(Y|X)) = -log P(Y|X))</script><h3 id="相对熵-KL散度"><a href="#相对熵-KL散度" class="headerlink" title="相对熵/KL散度"></a>相对熵/KL散度</h3><p>熵的本质是香农信息量(<script type="math/tex">-log\ p</script>)的期望。关于样本集的两个分布p和q，p为真实分布，q为非真实分布。则按p来识别一个样本的期望为<script type="math/tex">H(p)=-\sum_ip(i)\cdot log(p(i))</script>。如果用q来表示来自p的期望，则<script type="math/tex">H(p, q)=-\sum_ip(i)\cdot log(q(i))</script>，此为交叉熵。</p>
+<p>根据Gibbs’ inequality可知，<script type="math/tex">H(p,q)\ge H(p)</script>恒成立，当q与p相等时取等号。定义相对熵<script type="math/tex">D(p||q)=H(p,q)-H(p)=\sum_ip(i)\cdot log(\frac{p(i)}{q(i)})</script>，为<code>KL散度</code>（Kullback-Leibler divergence, KLD）。它表示两个函数或概率分布的距离：差异越大则相对熵越大，差异越小则相对熵越小，特别地，若两者相同则熵为0。相对熵<strong>表示用错误分布表示正确分布相对于正确分布表示正确分布的无谓代价</strong>。相对熵，<strong>不具有对称性</strong>。</p>
+<p>一般KL散度用于VAE和GAN中判别两个概率分布的相似性。</p>
+<h2 id="距离度量"><a href="#距离度量" class="headerlink" title="距离度量"></a>距离度量</h2><h3 id="欧式距离"><a href="#欧式距离" class="headerlink" title="欧式距离"></a>欧式距离</h3><p>欧氏距离计算<strong>默认对于每一个维度给予相同的权重</strong>，因此如果不同维度的取值范围差别很大，那么结果很容易被某个维度所决定。解决方法除了<strong>对数据进行处理</strong>以外，还可以<strong>使用加权欧氏距离</strong>，不同维度使用不同的权重。</p>
+<script type="math/tex; mode=display">d(\vec{x}, \vec{y})=\sqrt{\sum_{i=1}^n(x_i-y_i)^2} ​</script><h3 id="曼哈顿距离"><a href="#曼哈顿距离" class="headerlink" title="曼哈顿距离"></a>曼哈顿距离</h3><script type="math/tex; mode=display">d(\vec{x}, \vec{y})=\sum_{i=1}^n|x_i-y_i|​</script><h3 id="切比雪夫距离"><a href="#切比雪夫距离" class="headerlink" title="切比雪夫距离"></a>切比雪夫距离</h3><script type="math/tex; mode=display">d(\vec{x}, \vec{y})=\max_i(|x_i-y_i|)=\lim_{k\to\infty}(\sum_{i=1}^n|x_i-y_i|^k)^{\frac{1}{k}}​</script><h3 id="闵科夫斯基距离"><a href="#闵科夫斯基距离" class="headerlink" title="闵科夫斯基距离"></a>闵科夫斯基距离</h3><script type="math/tex; mode=display">d(\vec{x}, \vec{y})=(\sum_{i=1}^n|x_i-y_i|^k)^{\frac{1}{k}}</script><blockquote>
+<p>$p=1​$就是曼哈顿距离，当 $p=2​$为欧式距离，当 $p\to \infty ​$为切比雪夫距离</p>
+</blockquote>
+<h3 id="标准化欧式距离"><a href="#标准化欧式距离" class="headerlink" title="标准化欧式距离"></a>标准化欧式距离</h3><script type="math/tex; mode=display">X^\ast=\frac{X-\mu}{\sigma}</script><script type="math/tex; mode=display">d(\vec{x},\vec{y})=\sqrt{\sum_{i=1}^n(\frac{x_i-y_i}{\sigma_i})^2}</script><h3 id="马氏距离"><a href="#马氏距离" class="headerlink" title="马氏距离"></a>马氏距离</h3><script type="math/tex; mode=display">d(\vec{x},\vec{y})=(\vec{x}-\vec{y})^TV^{-1}(\vec{x}-\vec{y})</script><blockquote>
+<p>$V$为 $\vec{x}$和 $\vec{y}$所在数据集的协方差函数。</p>
+</blockquote>
+<h3 id="余弦距离"><a href="#余弦距离" class="headerlink" title="余弦距离"></a>余弦距离</h3><script type="math/tex; mode=display">cos\theta=\frac{X\cdot Y}{|X||Y|}\frac{\sum_{i=1}^{n}x_iy_i}{\sqrt{\sum_{i=1}^nx_i^2}\cdot \sqrt{\sum_{i=1}^ny_i^2}}</script><blockquote>
+<p>取值范围为[-1,1]</p>
+</blockquote>
+<h3 id="Jaccard相似系数"><a href="#Jaccard相似系数" class="headerlink" title="Jaccard相似系数"></a>Jaccard相似系数</h3><script type="math/tex; mode=display">J(A,B)=\frac{|A\cap B|}{|A \cup B|}</script><h3 id="Pearson相关系数-协方差-标准差"><a href="#Pearson相关系数-协方差-标准差" class="headerlink" title="Pearson相关系数(协方差/标准差)"></a>Pearson相关系数(协方差/标准差)</h3><p>同上</p>
+<hr>
+<h1 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h1><h2 id="数据缺失处理"><a href="#数据缺失处理" class="headerlink" title="数据缺失处理"></a>数据缺失处理</h2><h3 id="特征中缺失值较多"><a href="#特征中缺失值较多" class="headerlink" title="特征中缺失值较多"></a>特征中缺失值较多</h3><p>一般直接将该特征舍弃，否则会引入更大的噪声。</p>
+<h3 id="特征中缺失值较少"><a href="#特征中缺失值较少" class="headerlink" title="特征中缺失值较少"></a>特征中缺失值较少</h3><p>缺失值如果低于10%，那么可以考虑：</p>
+<ul>
+<li>删除存在缺失值的个案/样本。</li>
+<li>将缺失值（Nan）作为一个特征，假设用0表示。</li>
+<li>用同类均值/中值填充。</li>
+<li>用上下附近的数据值填充。</li>
+<li>线性插值。</li>
+<li>拟合。利用没有缺失值的属性来预测包含了缺失值的属性的缺失值。</li>
+</ul>
+<h2 id="Standardization，Scaling"><a href="#Standardization，Scaling" class="headerlink" title="Standardization，Scaling"></a>Standardization，Scaling</h2><h3 id="除以L2范数"><a href="#除以L2范数" class="headerlink" title="除以L2范数"></a>除以L2范数</h3><p>准确来说，这属于Normalization的内容。</p>
+<p>通常采用  $X = \frac{X}{||X||}​$ 的方式来对每一行或者每一列进行标准化。以下公式中， $X_{norm} = \sqrt{\sum_{i=0}^nX_i^2}​$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">x_norm = np.linalg.norm(x, axis = <span class="number">1</span>, keepdims = <span class="literal">True</span>)</span><br><span class="line">x = x / x_norm</span><br></pre></td></tr></table></figure>
+<h3 id="标准化"><a href="#标准化" class="headerlink" title="标准化"></a>标准化</h3><p>$X = \frac{X-\mu}{\sigma}​$，其中$\mu​$和$\sigma​$分别表示数据的均值和标准差。主要通过<code>scale</code>和<code>StandardScalar</code>实现。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> preprocessing</span><br><span class="line">X_scaled = preprocessing.scale(X_train)		<span class="comment"># 对数据中的每一列或每一行标准化，但将其计算所得的均值、标准差应用于其他数据的变换</span></span><br><span class="line"></span><br><span class="line">scaler = preprocessing.StandardScaler().fit(X_train)	<span class="comment"># 可以学习参数，因而可应用于其他数据的标准化变换中</span></span><br><span class="line">X_scaled = scaler.transform(X_train)</span><br><span class="line">X_test = scaler.transform(X_test)</span><br></pre></td></tr></table></figure>
+<h3 id="归一化"><a href="#归一化" class="headerlink" title="归一化"></a>归一化</h3><p>通过除以减去最小值，除以数据跨度来将数据归一化至某个区间。主要通过<code>minmax_scale</code>和<code>MinMaxScale</code>， 以及<code>maxabs_scale</code>和<code>MaxAbsScaler</code>来实现。</p>
+<p><code>MinMaxScaler</code>可接收参数<code>feature_range=(a,b)</code>，其变换公式为$X = \frac{X-X_{min}}{X_{max}-X_{min}} \cdot (b-a)+a$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">min_max_scaler = preprocessing.MinMaxScaler(feature_range=(<span class="number">0</span>, <span class="number">1</span>))</span><br><span class="line">X_train_minmax = min_max_scaler.fit_transform(X_train)</span><br><span class="line">X_test_minmax = min_max_scaler.transform(X_test)</span><br></pre></td></tr></table></figure>
+<p><code>MaxAbsScaler</code>通过将数据除以最大值来标准化，适用于均值为0的数据，适用于稀疏数据。公式为$X=\frac{X}{X_{max}}$。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_train = np.array([[ <span class="number">1.</span>, <span class="number">-1.</span>,  <span class="number">2.</span>],</span><br><span class="line"><span class="meta">... </span>                    [ <span class="number">2.</span>,  <span class="number">0.</span>,  <span class="number">0.</span>],</span><br><span class="line"><span class="meta">... </span>                    [ <span class="number">0.</span>,  <span class="number">1.</span>, <span class="number">-1.</span>]])</span><br><span class="line">...</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max_abs_scaler = preprocessing.MaxAbsScaler()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_train_maxabs = max_abs_scaler.fit_transform(X_train)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_train_maxabs                <span class="comment"># doctest +NORMALIZE_WHITESPACE^</span></span><br><span class="line">array([[ <span class="number">0.5</span>, <span class="number">-1.</span> ,  <span class="number">1.</span> ],</span><br><span class="line">       [ <span class="number">1.</span> ,  <span class="number">0.</span> ,  <span class="number">0.</span> ],</span><br><span class="line">       [ <span class="number">0.</span> ,  <span class="number">1.</span> , <span class="number">-0.5</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_test = np.array([[ <span class="number">-3.</span>, <span class="number">-1.</span>,  <span class="number">4.</span>]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_test_maxabs = max_abs_scaler.transform(X_test)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_test_maxabs                 </span><br><span class="line">array([[<span class="number">-1.5</span>, <span class="number">-1.</span> ,  <span class="number">2.</span> ]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>max_abs_scaler.scale_         </span><br><span class="line">array([<span class="number">2.</span>,  <span class="number">1.</span>,  <span class="number">2.</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="异常值较多的数据标准化"><a href="#异常值较多的数据标准化" class="headerlink" title="异常值较多的数据标准化"></a>异常值较多的数据标准化</h3><ul>
+<li><code>RobustScaler</code></li>
+<li><code>robust_scale(X, axis=0, with_centering=True, with_scaling=True, quantile_range=(25.0, 75.0), copy=True)</code><ul>
+<li><code>quantile_range</code>：计算变换尺度时考虑的数据区间</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> RobustScaler</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X = [[ <span class="number">1.</span>, <span class="number">-2.</span>,  <span class="number">2.</span>],</span><br><span class="line"><span class="meta">... </span>     [ <span class="number">-2.</span>,  <span class="number">1.</span>,  <span class="number">3.</span>],</span><br><span class="line"><span class="meta">... </span>     [ <span class="number">4.</span>,  <span class="number">1.</span>, <span class="number">-2.</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>transformer = RobustScaler().fit(X)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>transformer</span><br><span class="line">RobustScaler(copy=<span class="literal">True</span>, quantile_range=(<span class="number">25.0</span>, <span class="number">75.0</span>), with_centering=<span class="literal">True</span>,</span><br><span class="line">       with_scaling=<span class="literal">True</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>transformer.transform(X)</span><br><span class="line">array([[ <span class="number">0.</span> , <span class="number">-2.</span> ,  <span class="number">0.</span> ],</span><br><span class="line">       [<span class="number">-1.</span> ,  <span class="number">0.</span> ,  <span class="number">0.4</span>],</span><br><span class="line">       [ <span class="number">1.</span> ,  <span class="number">0.</span> , <span class="number">-1.6</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="非线性变换"><a href="#非线性变换" class="headerlink" title="非线性变换"></a>非线性变换</h2><h3 id="均匀分布变换"><a href="#均匀分布变换" class="headerlink" title="均匀分布变换"></a>均匀分布变换</h3><ul>
+<li><code>quantile_transform(X, axis=0, n_quantiles=1000, output_distribution=’uniform’, ignore_implicit_zeros=False, subsample=100000, random_state=None, copy=False)</code><ul>
+<li><code>n_quantiles</code>:Number of quantiles to be computed. It corresponds to the number of landmarks used to discretize the cumulative density function.</li>
+<li><code>output_distribution</code>:Marginal distribution for the transformed data. The choices are ‘uniform’ (default) or ‘normal’.</li>
+<li><code>ignore_implicit_zeros</code>:Only applies to sparse matrices. If True, the sparse entries of the matrix are discarded to compute the quantile statistics. If False, these entries are treated as zeros.</li>
+<li><code>subsample</code>:Maximum number of samples used to estimate the quantiles for computational efficiency. Note that the subsampling procedure may differ for value-identical sparse and dense matrices.</li>
+</ul>
+</li>
+<li><code>QuantileTransformer(n_quantiles=1000, output_distribution=’uniform’, ignore_implicit_zeros=False, subsample=100000, random_state=None, copy=True)</code></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_iris</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>iris = load_iris()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X, y = iris.data, iris.target</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>quantile_transformer = preprocessing.QuantileTransformer(random_state=<span class="number">0</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_train_trans = quantile_transformer.fit_transform(X_train)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_test_trans = quantile_transformer.transform(X_test)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>np.percentile(X_train[:, <span class="number">0</span>], [<span class="number">0</span>, <span class="number">25</span>, <span class="number">50</span>, <span class="number">75</span>, <span class="number">100</span>]) </span><br><span class="line">array([ <span class="number">4.3</span>,  <span class="number">5.1</span>,  <span class="number">5.8</span>,  <span class="number">6.5</span>,  <span class="number">7.9</span>])</span><br></pre></td></tr></table></figure>
+<h3 id="高斯分布变换"><a href="#高斯分布变换" class="headerlink" title="高斯分布变换"></a>高斯分布变换</h3><ul>
+<li><code>PowerTransformer(method=’yeo-johnson’, standardize=True, copy=True)</code><ul>
+<li><code>method</code>：可选参数为[‘yeo-johnson’, ‘box-cox’]</li>
+<li><code>standardize</code>：是否标准化输出</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>pt = preprocessing.PowerTransformer(method=<span class="string">'box-cox'</span>, standardize=<span class="literal">False</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_lognormal = np.random.RandomState(<span class="number">616</span>).lognormal(size=(<span class="number">3</span>, <span class="number">3</span>))</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X_lognormal                                         </span><br><span class="line">array([[<span class="number">1.28</span>..., <span class="number">1.18</span>..., <span class="number">0.84</span>...],</span><br><span class="line">       [<span class="number">0.94</span>..., <span class="number">1.60</span>..., <span class="number">0.38</span>...],</span><br><span class="line">       [<span class="number">1.35</span>..., <span class="number">0.21</span>..., <span class="number">1.09</span>...]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>pt.fit_transform(X_lognormal)                   </span><br><span class="line">array([[ <span class="number">0.49</span>...,  <span class="number">0.17</span>..., <span class="number">-0.15</span>...],</span><br><span class="line">       [<span class="number">-0.05</span>...,  <span class="number">0.58</span>..., <span class="number">-0.57</span>...],</span><br><span class="line">       [ <span class="number">0.69</span>..., <span class="number">-0.84</span>...,  <span class="number">0.10</span>...]])</span><br></pre></td></tr></table></figure>
+<h2 id="Normalization"><a href="#Normalization" class="headerlink" title="Normalization"></a>Normalization</h2><ul>
+<li><code>Normalizer()</code></li>
+<li><code>normalize(X, norm=&#39;l2&#39;, axis=1, copy=True, return_norm=False)</code><ul>
+<li><code>norm</code>：可选参数有[‘l1’, ‘l2’, ‘max’]。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">X_normalized = preprocessing.normalize(X, norm=<span class="string">'l2'</span>)</span><br></pre></td></tr></table></figure>
+<h2 id="类别编码"><a href="#类别编码" class="headerlink" title="类别编码"></a>类别编码</h2><h3 id="Ordinal编码"><a href="#Ordinal编码" class="headerlink" title="Ordinal编码"></a>Ordinal编码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc = preprocessing.OrdinalEncoder()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X = [[<span class="string">'male'</span>, <span class="string">'from US'</span>, <span class="string">'uses Safari'</span>], [<span class="string">'female'</span>, <span class="string">'from Europe'</span>, <span class="string">'uses Firefox'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc.fit(X)  </span><br><span class="line"><span class="comment"># OrdinalEncoder(categories='auto', dtype=&lt;... 'numpy.float64'&gt;)</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc.transform([[<span class="string">'female'</span>, <span class="string">'from US'</span>, <span class="string">'uses Safari'</span>]])</span><br><span class="line">array([[<span class="number">0.</span>, <span class="number">1.</span>, <span class="number">1.</span>]])</span><br></pre></td></tr></table></figure>
+<h3 id="One-hot-编码"><a href="#One-hot-编码" class="headerlink" title="One-hot 编码"></a>One-hot 编码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc = preprocessing.OneHotEncoder(handle_unknown=<span class="string">'ignore'</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>X = [[<span class="string">'male'</span>, <span class="string">'from US'</span>, <span class="string">'uses Safari'</span>], [<span class="string">'female'</span>, <span class="string">'from Europe'</span>, <span class="string">'uses Firefox'</span>]]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc.fit(X) </span><br><span class="line">OneHotEncoder(categorical_features=<span class="literal">None</span>, categories=<span class="literal">None</span>,</span><br><span class="line">       dtype=&lt;... <span class="string">'numpy.float64'</span>&gt;, handle_unknown=<span class="string">'ignore'</span>,</span><br><span class="line">       n_values=<span class="literal">None</span>, sparse=<span class="literal">True</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>enc.transform([[<span class="string">'female'</span>, <span class="string">'from Asia'</span>, <span class="string">'uses Chrome'</span>]]).toarray()</span><br><span class="line">array([[<span class="number">1.</span>, <span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>, <span class="number">0.</span>]])</span><br></pre></td></tr></table></figure>
+<h2 id="离散化-Discretization"><a href="#离散化-Discretization" class="headerlink" title="离散化 Discretization"></a>离散化 Discretization</h2><p>将连续的特征转化为离散的值。</p>
+<h3 id="K-Bin"><a href="#K-Bin" class="headerlink" title="K-Bin"></a>K-Bin</h3><p><code>`KBinsDiscretizer(n_bins=5, encode=’onehot’, strategy=’quantile’)</code></p>
+<ul>
+<li><code>n_bins</code>：分成多少组</li>
+<li><code>encode</code>：输出数据格式，可选参数 {‘onehot’, ‘onehot-dense’, ‘ordinal’}</li>
+<li><code>strategy</code>：分组方法，可选参数{‘uniform’, ‘quantile’, ‘kmeans’}</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>X = np.array([[ <span class="number">-3.</span>, <span class="number">5.</span>, <span class="number">15</span> ],</span><br><span class="line"><span class="meta">... </span>              [  <span class="number">0.</span>, <span class="number">6.</span>, <span class="number">14</span> ],</span><br><span class="line"><span class="meta">... </span>              [  <span class="number">6.</span>, <span class="number">3.</span>, <span class="number">11</span> ]])</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>est = preprocessing.KBinsDiscretizer(n_bins=[<span class="number">3</span>, <span class="number">2</span>, <span class="number">2</span>], encode=<span class="string">'ordinal'</span>).fit(X)</span><br></pre></td></tr></table></figure>
+<h3 id="二值化"><a href="#二值化" class="headerlink" title="二值化"></a>二值化</h3><p><code>Binarizer(threshold=0.0, copy=True)</code></p>
+<ul>
+<li><code>threshold</code>：0/1划分的阈值，大于阈值的为1，否则为0。</li>
+</ul>
+<h1 id="类别不平衡情况"><a href="#类别不平衡情况" class="headerlink" title="类别不平衡情况"></a>类别不平衡情况</h1><p>(1) 过采样：对类别较少的样本增加采样，使得正负样本的数目大致相等。例如SMOTE（正例插值增加正例数目）</p>
+<p>(2) 降采样：从类别较多的样本中随机剔除，使得正负样本数目大致相等。（EasyEnsemble，将负例分成不同的集合供不同的学习器学习）</p>
+<p>(3) 阈值移动（移动二类的分割阈值使得预测结果的比例与训练集的样本类别比例大致相等）：</p>
+<p>一般认为 $\frac{y}{1-y}&gt;1$即可判定为正例，为了考虑正负样本不平衡，通常认为$\frac{y}{1-y}&gt;\frac{m^+}{m^-}$时可以判定为正例，因此在实际时，对$\frac{y’}{1-y’}=\frac{y}{1-y}\cdot \frac{m^-}{m^+}$，称为“再缩放”。</p>
+<p>(4) 类别权重：样本数目少的类别权重更大，反之更小。</p>
+<p>(4) 集成方法</p>
+<blockquote>
+<p>总结：过采样和降采样都会使得样本的分布失真。</p>
+</blockquote>
+<hr>
+<h1 id="特征选择"><a href="#特征选择" class="headerlink" title="特征选择"></a>特征选择</h1><p>特征选择是特征工程里的一个重要问题，其目标是：(1)寻找最优特征子集，提高训练速度；(2)减少噪声特征，提高模型的泛化能力。特征选择能剔除不相关(irrelevant)或冗余(redundant )的特征，从而达到减少特征个数，提高模型精确度，减少运行时间的目的。另一方面，选取出真正相关的特征简化模型，协助理解数据产生的过程。<a href="https://zhuanlan.zhihu.com/p/32749489" target="_blank" rel="noopener">特征选择</a></p>
+<h2 id="过滤-filter-特征选择"><a href="#过滤-filter-特征选择" class="headerlink" title="过滤(filter)特征选择"></a>过滤(filter)特征选择</h2><p>针对每一个特征$x_i$，分别计算$x_i$相对于类别标签$y$的信息量$S(i)$，得到$n$个结果，将这$n$个结果从大到小排序，输出前$k$个特征。目标是选出与$y$关联最密切的一些特征$x_i$。</p>
+<h3 id="Pearson-相关系数-1"><a href="#Pearson-相关系数-1" class="headerlink" title="Pearson 相关系数"></a>Pearson 相关系数</h3><p>皮尔森相关系数是一种最简单的、能帮助理解特征和响应变量（即因变量，与之对应的自变量又称为解释变量）之间关系的方法。皮尔森相关系数能衡量变量之间的线性相关性，-1表示完全负相关，+1表示完全正相关，0表示不相关。皮尔森相关系数<strong>速度快，易于计算</strong>，一般第一时间执行。但是有一个明显缺点：<strong>只对线性关系敏感</strong>，对于非线性关系无法衡量。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">scipy.stats.pearsonr(x, y)</span><br></pre></td></tr></table></figure>
+<h3 id="卡方检验"><a href="#卡方检验" class="headerlink" title="卡方检验"></a>卡方检验</h3><p>卡方检验是检验定性自变量对定性因变量的相关性。假设自变量有$N$种取值，因变量有$M$种取值，考虑自变量等于$i$且因变量等于$j$的样本频数的观察值与期望的差距，构建统计量：$\chi ^2=\sum \frac{(A-E)^2}{E}$。表征的是自变量对因变量的相关性，可用于<strong>特征选择和降维</strong>。</p>
+<blockquote>
+<p>具体计算公式为，假设自变量取值有$N​$种，因变量有$M​$种取值，$E_{ei,ej}​$ 表示两个事件（自变量取值为$i​$，因变量取值为$j​$）独立时，共同出现的概率，取计算公式为$E_{ei, ej}=m\cdot p(i)\cdot p(j)​$，$p(i)​$为自变量取值为$i​$的概率，$p(j)​$为因变量取值为$j​$的概率。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> SelectKBest, chi2</span><br><span class="line">x_new = SelectKBest(chi2, k=<span class="number">2</span>).fit_transform(x, y)</span><br></pre></td></tr></table></figure>
+<h3 id="互信息和最大信息系数"><a href="#互信息和最大信息系数" class="headerlink" title="互信息和最大信息系数"></a>互信息和最大信息系数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> minepy <span class="keyword">import</span> MINE</span><br><span class="line">m=MINE()</span><br><span class="line">m.compute_score(x, f(x))</span><br><span class="line">print(m.mic())</span><br></pre></td></tr></table></figure>
+<h3 id="距离相关系数"><a href="#距离相关系数" class="headerlink" title="距离相关系数"></a>距离相关系数</h3><p>距离相关系数克服了Pearson相关系数的弱点，可以应用于<strong>识别非线性关系</strong>。当pearson相关系数为0时，不能断定两个变量独立（可能非线性相关）；如果距离相关系数为0，那么可以说两个变量是独立的。</p>
+<h3 id="方差选择法"><a href="#方差选择法" class="headerlink" title="方差选择法"></a>方差选择法</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> VarianceThreshold</span><br><span class="line">sel = VarianceThreshold(threshold=(<span class="number">0.8</span>*(<span class="number">1</span><span class="number">-0.8</span>)))</span><br><span class="line">x_new = sel.fit_transform(X)</span><br></pre></td></tr></table></figure>
+<h2 id="包装-wrapper-特征选择"><a href="#包装-wrapper-特征选择" class="headerlink" title="包装(wrapper)特征选择"></a>包装(wrapper)特征选择</h2><p><strong>不断地使用不同的特征组合来测试学习算法进行特征选择</strong>。先选定特定算法， 一般会选用普遍效果较好的算法， 例如Random Forest， SVM， kNN等等。</p>
+<h3 id="前向搜索"><a href="#前向搜索" class="headerlink" title="前向搜索"></a>前向搜索</h3><p>每次增量地从剩余未选中的特征选出一个加入特征集中，待达到阈值或者 $n$时，从所有的 $F$ 中选出错误率最小的。过程如下：</p>
+<ol>
+<li>初始化特征集 $F$ 为空。</li>
+<li>扫描 $i$ 从 1 到 $n$，如果第 $i$ 个特征不在 $F$ 中，那么特征 $i$ 和 $F$ 放在一起作为 $F_i$(即 $F_i=F\cup{i}$ )。<br>在只使用 $F_i$ 中特征的情况下，利用交叉验证来得到 $F_i$ 的错误率。</li>
+<li>从上步中得到的 $n$ 个 $F_i$ 中选出错误率最小的  $F_i$ ,更新 $F$ 为 $F_i$  。</li>
+<li>如果 $F$ 中的特征数达到了 $n$ 或者预定的阈值（如果有的话），那么输出整个搜索过程中最好的 ；若没达到，则转到 2，继续扫描。</li>
+</ol>
+<h3 id="后向搜索"><a href="#后向搜索" class="headerlink" title="后向搜索"></a>后向搜索</h3><p>既然有增量加，那么也会有增量减，后者称为后向搜索。先将$F$设置为 ${1,2,\cdots ,n}$ ，然后每次删除一个特征，并评价，直到达到阈值或者为空，然后选择最佳的 $F$。</p>
+<p>这两种算法都可以工作，但是计算复杂度比较大。时间复杂度为 $O(n+(n-1)+(n-2)+\cdots +1)=O(n^2)$。</p>
+<h3 id="递归特征消除法"><a href="#递归特征消除法" class="headerlink" title="递归特征消除法"></a>递归特征消除法</h3><p>递归消除特征法使用一个基模型来进行多轮训练，每轮训练后，消除若干权值系数的特征，再基于新的特征集进行下一轮训练。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.feature_selection <span class="keyword">import</span> RFE</span><br><span class="line">RFE(estimator=LogisticRegression(), n_features_to_select=<span class="number">2</span>).fit_transform(X, y)</span><br></pre></td></tr></table></figure>
+<h2 id="嵌入-embed-特征选择"><a href="#嵌入-embed-特征选择" class="headerlink" title="嵌入(embed)特征选择"></a>嵌入(embed)特征选择</h2><h3 id="基于惩罚项的特征选择"><a href="#基于惩罚项的特征选择" class="headerlink" title="基于惩罚项的特征选择"></a>基于惩罚项的特征选择</h3><p>通过L1正则项来选择特征：L1正则方法具有稀疏解的特性，因此天然具备特征选择的特性，但是要注意，L1没有选到的特征不代表不重要，原因是两个具有高相关性的特征可能只保留了一个，如果要确定哪个特征重要应再通过L2正则方法交叉检验。</p>
+<h3 id="基于学习模型的特征排序"><a href="#基于学习模型的特征排序" class="headerlink" title="基于学习模型的特征排序"></a>基于学习模型的特征排序</h3><p>直接使用你要用的机器学习算法，针对每个单独的特征和响应变量建立预测模型。假如某个特征和响应变量之间的关系是非线性的，可以用基于树的方法（决策树、随机森林）、或者扩展的线性模型等。基于树的方法比较易于使用，因为他们对非线性关系的建模比较好，并且不需要太多的调试。但要注意过拟合问题，因此树的深度最好不要太大，再就是运用交叉验证。通过这种训练对特征进行打分获得相关性后再训练最终模型。</p>
+<hr>
+<h1 id="多类分类情况"><a href="#多类分类情况" class="headerlink" title="多类分类情况"></a>多类分类情况</h1><p>对于一些二分类模型，可以推广到多分类，一般将多分类任务拆解为若干个二分类任务。经典的拆分策略有“OvO”， “OvR”， “MvM”。</p>
+<p>OvO：将N个类别两两配对，构建$\frac{N(N-1)}{2}​$个任务，例如对于类别$C_i​$和$C_j​$两类，把样本集D中的类别为$C_i​$的样本视为正例，类别为$C_j​$的样本视为负例，训练模型。测试阶段，将样本提交给所有分类器，得到$\frac{N(N-1)}{2}​$个分类结果，通过投票得到最终的分类结果。</p>
+<p>OvR：每次将一个类别视为正例，其余类别视为负例，总计训练N个分类器。在测试时，如果只有一个分类器将其预测为正类，那么对应的类别标记即为最终的结果；如果有多个分类器预测为正类，则挑选概率大的那个类别。</p>
+<p>MvM：每次将若干个类别视为正类，若干个其他类视为负类。OvO和OvR是MvM的特例。MvM的正反类需要特殊设计，不能随意选取。常用的MvM方法有ECOC。</p>
+<p>OvO在存储开销和测试时间开销通常比OvR大；在类别很多时，OvO的训练时间开销比OvR更小。</p>
+<hr>
+<h1 id="模型融合"><a href="#模型融合" class="headerlink" title="模型融合"></a>模型融合</h1><p><a href="https://zhuanlan.zhihu.com/p/25836678" target="_blank" rel="noopener">模型融合方法概述</a></p>
+<p>个人认为机器学习最难的三步：特征工程；调参；模型融合。</p>
+<p>模型融合方法，主要包括：Bagging；Boosting；Stacking等。</p>
+<p>为了避免Stacking过拟合，必须用K折交叉验证来得到基模型的概率输出特征。</p>
+<hr>
+<h1 id="L1和L2"><a href="#L1和L2" class="headerlink" title="L1和L2"></a>L1和L2</h1><p><strong>正则化之所以能够降低过拟合的原因在于，正则化是结构风险最小化的一种策略实现。</strong></p>
+<p>给loss function加上正则化项，能使得新得到的优化目标函数h = f+normal，需要在f和normal中做一个权衡（trade-off），如果还像原来只优化f的情况下，那可能得到一组解比较复杂，使得正则项normal比较大，那么h就不是最优的，因此可以看出加<strong>正则项能让解更加简单，符合奥卡姆剃刀理论，同时也比较符合在偏差和方差（方差表示模型的复杂度）分析中，通过降低模型复杂度，得到更小的泛化误差，降低过拟合程度</strong>。</p>
+<p>L1正则化就是在loss function后边所加正则项为L1范数，加上L1范数容易<strong>得到稀疏解</strong>（0比较多）。L2正则化就是loss function后边所加正则项为L2范数的平方，加上L2正则相比于L1正则来说，得到的解<strong>比较平滑</strong>（不是稀疏），但是同样能够保证解中<strong>接近于0</strong>（但不是等于0，所以相对平滑）的维度比较多，降低模型的复杂度。</p>
+<h2 id="L1为什么可以得到稀疏解？"><a href="#L1为什么可以得到稀疏解？" class="headerlink" title="L1为什么可以得到稀疏解？"></a>L1为什么可以得到稀疏解？</h2><p>具体可以参考<a href="https://www.zhihu.com/question/37096933/answer/70494622" target="_blank" rel="noopener">知乎-l1 相比于 l2 为什么容易获得稀疏解？</a>。</p>
+<p>$L_1$和$L_2$ 能不能把参数$\theta$优化为0，取决于原先的损失函数在 $\theta=$0 点处的导数。<br>如果本来导数不为 0，那么施加 $L_2$ 后导数依然不为 0，最优的 $\theta$ 也不会变成 0。施加 $L_1$时，只要正则项的系数 $\lambda$ 大于原先损失函数在 0 点处的导数的绝对值，$\theta$ = 0 就会变成一个极小值点。</p>
+<p>以上只分析了一个参数 $\theta$。事实上 $L_1$  会使得许多参数的最优值变成 0，这样模型就稀疏了。</p>
+<p>更公式的理解：<a href="https://blog.csdn.net/b876144622/article/details/81276818" target="_blank" rel="noopener">L1正则为什么更容易获得稀疏解？</a></p>
+<p>假设原损失函数$L(\theta)$在$\theta=0$时的导数为$d\theta$。</p>
+<p>引入系数为$\lambda$的$L_1$正则项之后，$\frac{\partial{J}}{\partial{\theta}}|_{\theta=0-}=d\theta-\lambda$，$\frac{\partial{J}}{\partial{\theta}}|_{\theta=0+}=d\theta+\lambda$；</p>
+<p>引入系数为$\lambda$的$L_2$正则项之后，$\frac{\partial{J}}{\partial{\theta}}|_{\theta=0}=d\theta+\lambda\theta=d\theta$。</p>
+<p>可见，引入$L_2​$正则时，代价函数在0处的导数仍是$d\theta​$，无变化。而引入$L_1​$正则后，代价函数在0处的导数有一个突变。从$d\theta+λ​$到$d\theta-λ​$，若$d\theta+λ​$和$d\theta-λ​$异号，则在0处会是一个极小值点。因此，优化时，很可能优化到该极小值点上，即$\theta=0​$处。</p>
+<h2 id="L2为什么会让参数趋于平滑和较小值"><a href="#L2为什么会让参数趋于平滑和较小值" class="headerlink" title="L2为什么会让参数趋于平滑和较小值?"></a>L2为什么会让参数趋于平滑和较小值?</h2><p>以上公式推导中，可知引入系数为$\lambda$的$L_2$正则项之后，$\frac{\partial {J}}{\partial {\theta}}=d\theta+\lambda\theta$，更新权重时，$\theta^{t+1}=\theta^{t}-\alpha (d\theta + \lambda\theta^t)=(1-\alpha\lambda)\theta^t-\alpha d\theta$。其中$\alpha \lambda$接近于0，假如$\theta$很大，则每次更新会减小较大的值；假如$\theta$很小，则每次减小较小的值，因此L2正则曲线比较平滑。</p>
+<p>随着参数$\theta$不断减小，梯度更新也逐渐减小，所以很快会收敛到较小的值但不为0。</p>
+<p>从几何角度来分析，L2类似于用圆形去逼近原损失函数的等高线，L1中两个权值倾向于一个较大另一个为0，L2中两个权值倾向于均为非零的较小数。这也就是L1稀疏，L2平滑的效果。</p>
+<p><img src="https://vimsky.com/wp-content/uploads/2015/08/Screen-Shot-2015-08-26-at-21.56.02.png" alt></p>
+<h2 id="L1优化方法"><a href="#L1优化方法" class="headerlink" title="L1优化方法"></a>L1优化方法</h2><ul>
+<li><a href="https://blog.csdn.net/u013745804/article/details/78711616" target="_blank" rel="noopener">近端梯度下降</a></li>
+<li><a href="https://blog.csdn.net/ymmxz/article/details/69396222" target="_blank" rel="noopener">坐标轴下降法</a></li>
+<li><a href="https://www.cnblogs.com/qinxiaoqin/p/8424310.html" target="_blank" rel="noopener">最小角回归法</a></li>
+<li><a href="http://www.voidcn.com/article/p-rtnwbbnm-bgz.html" target="_blank" rel="noopener">ISTA法</a></li>
+<li>等等</li>
+</ul>
+<h2 id="线性回归-岭回归-Lasso回归-弹性网回归"><a href="#线性回归-岭回归-Lasso回归-弹性网回归" class="headerlink" title="线性回归/岭回归/Lasso回归/弹性网回归"></a>线性回归/岭回归/Lasso回归/弹性网回归</h2><ul>
+<li>线性回归 + L2 ≈ 岭回归</li>
+<li>线性回归 + L1 ≈ Lasso回归</li>
+<li>线性回归 + L1 + L2 ≈ 弹性网回归</li>
+</ul>
+<hr>
+<h1 id="生成模型和判别模型"><a href="#生成模型和判别模型" class="headerlink" title="生成模型和判别模型"></a>生成模型和判别模型</h1><p>监督学习模型可以分为生成模型和判别模型。</p>
+<h2 id="生成模型"><a href="#生成模型" class="headerlink" title="生成模型"></a>生成模型</h2><p>生成模型：由数据联合概率分布$P(Y,X)$求出条件概率分布$P(Y|X)$，表示的是给定输入X产生输出Y的生成关系。例如：<strong>朴素贝叶斯、高斯混合模型、隐马尔科夫模型</strong>。</p>
+<p>优点：收敛速度快；能够应付存在隐变量的情况；</p>
+<p>缺点：需要更多的样本和计算量；实际情况下效果不如判别模型。</p>
+<h2 id="判别模型"><a href="#判别模型" class="headerlink" title="判别模型"></a>判别模型</h2><p>判别模型：由数据直接学习决策函数$f(X)$或者条件概率分布$P(Y|X)$，关心的是给定输入X，应该预测什么样的输出Y。例如：<strong>K近邻、感知机、决策树、逻辑回归、最大熵、支持向量机、Boosting、条件随机场、CNN</strong>等。</p>
+<p>优点：节省资源，需要的样本量更少；允许对输入进行抽象（例如降维）；准确率更高。</p>
+<p>缺点：以上生成模型的优点的反面。</p>
+<hr>
+<h1 id="最优化算法"><a href="#最优化算法" class="headerlink" title="最优化算法"></a>最优化算法</h1><h2 id="批量梯度下降-（Batch-Gradient-Descent）"><a href="#批量梯度下降-（Batch-Gradient-Descent）" class="headerlink" title="批量梯度下降 （Batch Gradient Descent）"></a>批量梯度下降 （Batch Gradient Descent）</h2><p>批量梯度下降法，是梯度下降法最常用的形式，具体做法也就是在更新参数时使用所有的样本来进行更新，即 ${\theta}_{i} = {\theta}_{i} - {\alpha} {\sum}_{j=0}^{m}(h_{\theta}(\vec{x}^{(j)})-y_j)x_i^{(j)} ​$。</p>
+<h2 id="随机梯度下降法（Stochastic-Gradient-Descent）"><a href="#随机梯度下降法（Stochastic-Gradient-Descent）" class="headerlink" title="随机梯度下降法（Stochastic Gradient Descent）"></a>随机梯度下降法（Stochastic Gradient Descent）</h2><p>随机梯度下降法，其实和批量梯度下降法原理类似，区别在与求梯度时没有用所有的m个样本的数据，而是仅仅选取一个样本j来求梯度。对应的更新公式是： $\theta_i = \theta_i - \alpha (h_{\theta}(\vec{x}^{(j)})-y_j)x_i^{(j)} $</p>
+<p>随机梯度下降法，和批量梯度下降法是两个极端，一个采用所有数据来梯度下降，一个用一个样本来梯度下降。自然各自的优缺点都非常突出。对于训练速度来说，随机梯度下降法由于每次仅仅采用一个样本来迭代，训练速度很快，而批量梯度下降法在样本量很大的时候，训练速度不能让人满意。对于准确度来说，随机梯度下降法用于仅仅用一个样本决定梯度方向，导致解很有可能不是最优。对于收敛速度来说，由于随机梯度下降法一次迭代一个样本，导致迭代方向变化很大，不能很快的收敛到局部最优解。</p>
+<h2 id="小批量随机梯度下降-（Mini-batch-Gradient-Descent）"><a href="#小批量随机梯度下降-（Mini-batch-Gradient-Descent）" class="headerlink" title="小批量随机梯度下降 （Mini-batch Gradient Descent）"></a>小批量随机梯度下降 （Mini-batch Gradient Descent）</h2><p>小批量梯度下降法是批量梯度下降法和随机梯度下降法的折衷，也就是对于m个样本，我们采用x个样子来迭代，1&lt;n&lt;m。一般可以取x=10，当然根据样本的数据，可以调整这个x的值。对应的更新公式是： $\theta_i = \theta_i - \alpha \sum_{j=t}^{t+n-1}(h_{\theta}(\vec{x}^{(j)})-y_j)x_i^{(j)} ​$</p>
+<h2 id="最小二乘法"><a href="#最小二乘法" class="headerlink" title="最小二乘法"></a>最小二乘法</h2><p>详细参考<a href="https://www.matongxue.com/madocs/818.html" target="_blank" rel="noopener">最小二乘的本质是什么</a></p>
+<p>以线性回归为例，对于一组观测数据$(\mathbb x, \mathbb y)​$，采用$y=ax+b​$去拟合观测值，则总误差的平方为$\epsilon =\sum(f(x_i)-y_i)^2=\sum(ax_i+b-y_i)^2​$。分别计算$\epsilon​$对$a​$和$b​$的偏导，令其为0，即可使得$\epsilon​$取到最小值。对于拟合高次方程、指数等方程均可采用这种方法求得$a​$和$b​$的近似解。</p>
+<h2 id="牛顿法（TODO）"><a href="#牛顿法（TODO）" class="headerlink" title="牛顿法（TODO）"></a>牛顿法（TODO）</h2><p><a href="https://www.zhihu.com/question/41881138/answer/146948429" target="_blank" rel="noopener">牛顿法</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/25703402" target="_blank" rel="noopener">从梯度下降到拟牛顿法</a></p>
+<h2 id="共轭梯度法（TODO）"><a href="#共轭梯度法（TODO）" class="headerlink" title="共轭梯度法（TODO）"></a>共轭梯度法（TODO）</h2><h2 id="梯度下降、最小二乘法、牛顿法、拟牛顿法的对比"><a href="#梯度下降、最小二乘法、牛顿法、拟牛顿法的对比" class="headerlink" title="梯度下降、最小二乘法、牛顿法、拟牛顿法的对比"></a>梯度下降、最小二乘法、牛顿法、拟牛顿法的对比</h2><p>在机器学习中的无约束优化算法，除了梯度下降以外，还有最小二乘法、牛顿法和拟牛顿法。</p>
+<p>梯度下降法和最小二乘法相比，梯度下降法需要选择步长，而最小二乘法不需要。梯度下降法是迭代求解，最小二乘法是计算解析解。如果样本量不算很大，且存在解析解，最小二乘法比起梯度下降法要有优势，计算速度很快。但是如果样本量很大，用最小二乘法由于需要求一个超级大的逆矩阵，这时就很难或者很慢才能求解解析解了，使用迭代的梯度下降法比较有优势。</p>
+<p>梯度下降法和牛顿法/拟牛顿法相比，两者都是迭代求解，不过梯度下降法是梯度求解，而牛顿法/拟牛顿法是用二阶的海森矩阵的逆矩阵或伪逆矩阵求解。相对而言，使用牛顿法/拟牛顿法收敛更快。但是每次迭代的时间比梯度下降法长。</p>
+<hr>
+<h1 id="无偏估计-参数估计方法"><a href="#无偏估计-参数估计方法" class="headerlink" title="无偏估计/参数估计方法"></a>无偏估计/参数估计方法</h1><h2 id="频率学派和贝叶斯学派"><a href="#频率学派和贝叶斯学派" class="headerlink" title="频率学派和贝叶斯学派"></a>频率学派和贝叶斯学派</h2><p>在对事物建模时，用$\theta$表示模型的参数，解决问题的本质就是求解$\theta$。详细参考<a href="https://zhuanlan.zhihu.com/p/32480810" target="_blank" rel="noopener">知乎—最大似然估计和最大后验估计</a></p>
+<h3 id="频率学派"><a href="#频率学派" class="headerlink" title="频率学派"></a>频率学派</h3><p><strong>认为模型参数$\theta$是一个定值</strong>，希望通过类似解方程组的方式从数据中求得该未知数。这就是频率学派使用的参数估计方法-<strong>极大似然估计（MLE）</strong>，这种方法往往<strong>在大数据量的情况下可以很好的还原模型的真实情况</strong>。</p>
+<h3 id="贝叶斯学派"><a href="#贝叶斯学派" class="headerlink" title="贝叶斯学派"></a>贝叶斯学派</h3><p><strong>认为$\theta$是一个随机变量，服从一定的概率分布</strong>。在贝叶斯学派里有两大输入和一大输出，输入是先验 (prior)和似然 (likelihood)，输出是后验 (posterior)。先验，即$P(\theta)$，指的是在没有观测到任何数据时对$\theta$的预先判断，例如扔硬币时认为大概率是均匀分布；似然，即$P(X|\theta)$，指假设$\theta$已知后观测到的数据应该是什么样子；后验，即$P(\theta|X)$，是最终的参数分布。贝叶斯估计的基础是贝叶斯公式：$P(\theta|X) = \frac{P(X|\theta)·P(\theta)}{P(X)}$。</p>
+<p>对于数据的观测方式不同或者假设不同，那么推知的参数也会因此而存在差异。这就是贝叶斯派视角下用来估计参数的常用方法-<strong>最大后验概率估计（MAP）</strong>，这种方法<strong>在先验假设比较靠谱的情况下效果显著</strong>，<strong>随着数据量的增加，先验假设对于模型参数的主导作用会逐渐削弱</strong>，相反真实的数据样例会大大占据有利地位。极端情况下，比如把先验假设去掉，或者<strong>假设先验满足均匀分布的话，那它和极大似然估计就如出一辙了。</strong></p>
+<h2 id="最大似然估计-MLE"><a href="#最大似然估计-MLE" class="headerlink" title="最大似然估计 MLE"></a>最大似然估计 MLE</h2><p>最大似然估计（Maximum likelihood estimation, 简称MLE）<a href="https://www.matongxue.com/madocs/447.html" target="_blank" rel="noopener">如何理解极大似然估计？</a></p>
+<p>假设数据$x_1, x_2, \cdots , \cdots x_n$是一组独立同分布的抽样，$X=(x_1, x_2, \cdots , x_n)$。那么MLE对$\theta$的估计方法可以如下推导：</p>
+<script type="math/tex; mode=display">\begin{split}\hat{\theta}_{MLE} = & arg\max P(X;\theta) \\\\ = &arg\max P(x_1;\theta)P(x_2;\theta) \cdots P(x_n;\theta) \\\\ = &arg\max \log \prod _{i=1}^{n}P(x_i;\theta)\\\\ = &arg\max \sum_{i=1}^n\log P(x_i;\theta)\\\\ = &arg\min-\sum_{i=1}^n\log P(x_i;\theta)\end{split}</script><h2 id="最大后验概率估计-MAP"><a href="#最大后验概率估计-MAP" class="headerlink" title="最大后验概率估计 MAP"></a>最大后验概率估计 MAP</h2><p>最大后验概率估计（Maximum a posteriori estimation，简称MAP）</p>
+<p>假设数据$x_1, x_2, … , … x_n​$是一组独立同分布的抽样，$X=(x_1, x_2, … , x_n)​$。那么MAP对$\theta​$的估计方法可以如下推导：</p>
+<script type="math/tex; mode=display">\begin{split}\hat θ_{MAP} = &arg\max P(θ|X) \\\\ = &arg\min -\log P(θ|X)\\\\ =&arg\min -\log P(X|θ)-\log P(θ)+\log P(X)\\\\ =&arg\min -\log P(X|θ)-\log P(θ)\end{split}​</script><p>第二行到第三行运用了贝叶斯定理；第三行到第四行可以舍去$P(X)​$因为其与$θ​$无关。而$-\log P(X|θ)​$其实就是负对数似然，所以<strong>MLE与MAP在优化时的不同在于先验项$-\log P(θ)​$</strong>。</p>
+<p>假定先验是一个高斯分布，即$P(θ)=c·e^{-\frac{θ^2}{2σ^2}}​$，取对数有$-\log P(θ)=c + \frac{θ^2}{2σ^2}​$。也就是说，在MAP中先验如果是一个高斯分布，等价于在MLE中采用了L2正则化。</p>
+<h2 id="EM算法"><a href="#EM算法" class="headerlink" title="EM算法"></a>EM算法</h2><p>现实中往往会遇到属性不完整（或者未被观测到，即未观测变量）的训练样本，，这种未观测变量又称为隐变量。令X表示已观测变量集，Z表示因变量集，$\theta$表示模型参数。要对$\theta$作极大似然估计，应最大化对数似然$LL(\theta|X, Z)=ln P(X, Z|\theta)$。然而由于Z是隐变量，上述式子无法求解，此时可以通过对Z计算期望，来最大化已观测数据的对数“边际似然”：$LL(\theta|X)=lnP(X|\theta)=ln\sum_zP(X,Z|\theta)$。</p>
+<p>EM算法常用于估计因变量，它是一种迭代式的方法，其基本思想是：若参数$\theta$已知，则可根据训练数据推断出最优因变量Z的值（这一步称为E步）；反之，若Z的值已知，则可以方便地对参数$\theta$做极大似然估计（M）。</p>
+<ul>
+<li>E（Expectation）步：以当前参数$\theta^t$推断因变量Z的分布$P(Z|X, \theta^t)$，计算对数似然$LL(\theta|X, Z)$关于Z的期望。</li>
+<li>M步：寻找参数，以最大化期望似然，即$\theta^{t+1}=argmax\ Q(\theta| \theta^t)$。</li>
+</ul>
+<blockquote>
+<p>详细：李航《统计学习方法》p155</p>
+</blockquote>
+<h2 id="无偏估计"><a href="#无偏估计" class="headerlink" title="无偏估计"></a>无偏估计</h2><p>详情可参考<a href="https://www.matongxue.com/madocs/808.html" target="_blank" rel="noopener">如何理解无偏估计？</a></p>
+<p>无偏反应的是采样来表征数据特征时，均值的偏移。</p>
+<p>因此，有偏/无偏  可以用均值是否相似来近似代替；有效/无效 可以用方差是否大来近似代替； 一致/不一致 可以用随着样本数增多偏差是否降低来近似表征。</p>
+<hr>
+<h1 id="常见的核函数"><a href="#常见的核函数" class="headerlink" title="常见的核函数"></a>常见的核函数</h1><p>构造出一个具有良好性能的SVM，核函数的选择是关键．核函数的选择包括两部分工作：一是核函数类型的选择，二是确定核函数类型后相关参数的选择。</p>
+<h2 id="常见核函数"><a href="#常见核函数" class="headerlink" title="常见核函数"></a>常见核函数</h2><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>核函数</th>
+<th>公式</th>
+<th>用法</th>
+<th>调参</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Linear kernel</td>
+<td><script type="math/tex">K(x_i,x_j)=x_i^Tx_j</script></td>
+<td>特征数量多从而线性可分时，或样本数量多再补充一些特征时，linear kernel可以是RBF kernel的特殊情况</td>
+<td></td>
+</tr>
+<tr>
+<td>Polynomial kernel</td>
+<td>$K(x_i,x_j)=(\gamma x_i^Tx_j+r)^d,d&gt;1 $</td>
+<td>一般用于图像处理，参数比RBF多，取值范围是(0,inf)</td>
+<td><code>-d</code>：多项式核函数的最高次项次数，<code>-g</code>：gamma参数，<code>-r</code>：核函数中的coef0</td>
+</tr>
+<tr>
+<td>Gaussian radial basis function (RBF)</td>
+<td>$K(x_i, x_j)=exp(-\gamma (x_i-x_j)^2) $</td>
+<td>通用，线性不可分时，特征维数少 样本数量正常时，在没有先验知识时用，取值在[0,1]</td>
+<td><code>-g</code>：gamma参数，默认值是1/k</td>
+</tr>
+<tr>
+<td>Sigmoid kernel</td>
+<td>$K(x_i,x_j)=tanh(\alpha x^Ty+c) $</td>
+<td>生成神经网络，在某些参数下和RBF很像，可能在某些参数下是无效的</td>
+<td><code>-g</code>：gamma参数，-r：核函数中的coef0</td>
+</tr>
+<tr>
+<td>Gaussian kernel</td>
+<td>$K(x_i,x_j)=exp(-\frac{2(x_i-x_j)^2}{\sigma}) $</td>
+<td>通用，在没有先验知识时用</td>
+<td></td>
+</tr>
+<tr>
+<td>Laplace RBF kernel</td>
+<td>$K(x_i, x_j)=exp(-\frac{(x_i-x_j)}{\sigma}) $</td>
+<td>通用，在没有先验知识时用</td>
+<td></td>
+</tr>
+<tr>
+<td>Hyperbolic tangent kernel</td>
+<td>$K(x_i,x_j)=tanh(\kappa x_i·x_j+c) $</td>
+<td>用于神经网络中</td>
+<td></td>
+</tr>
+<tr>
+<td>Bessel function of the first kind Kernel</td>
+<td></td>
+<td>可消除函数中的交叉项</td>
+<td></td>
+</tr>
+<tr>
+<td>ANOVA radial basis kernel</td>
+<td></td>
+<td>回归问题</td>
+<td></td>
+</tr>
+<tr>
+<td>Linear splines kernel in one-dimension</td>
+<td></td>
+<td>text categorization，回归问题，处理大型稀疏向量</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h2 id="如何选择核函数"><a href="#如何选择核函数" class="headerlink" title="如何选择核函数"></a>如何选择核函数</h2><p>在选取核函数解决实际问题时，通常采用的方法有：</p>
+<ul>
+<li>一是利用专家的先验知识预先选定核函数；</li>
+<li>二是采用Cross-Validation方法，即在进行核函数选取时，分别试用不同的核函数，归纳误差最小的核函数就是最好的核函数．如针对傅立叶核、RBF核，结合信号处理问题中的函数回归问题，通过仿真实验，对比分析了在相同数据条件下，采用傅立叶核的SVM要比采用RBF核的SVM误差小很多．</li>
+<li>三是采用由Smits等人提出的混合核函数方法，该方法较之前两者是目前选取核函数的主流方法，也是关于如何构造核函数的又一开创性的工作．将不同的核函数结合起来后会有更好的特性，这是混合核函数方法的基本思想．</li>
+</ul>
+<blockquote>
+<p>按照经验来看：</p>
+<ul>
+<li>如果<strong>特征数很大，样本的数目较多（或一般多）</strong>，这是往往样本线性可分，可考虑用<strong>线性核</strong>函数的SVM或LR（如果不考虑核函数，LR和SVM都是线性分类算法，也就是说他们的分类决策面都是线性的）。</li>
+<li>如果<strong>特征数较少，样本的数量较多</strong>，可以手动添加一些特征，使样本线性可分，再考虑用线性核函数的SVM或LR。</li>
+<li>如果特征数非常少，样本数目一般，这种情况一般使用RBF。</li>
+</ul>
+</blockquote>
+<h2 id="如何调参"><a href="#如何调参" class="headerlink" title="如何调参"></a>如何调参</h2><p>主要要调整的参数为<code>C</code>（惩罚系数）和<code>gamma</code>，可通过网格寻优的方式来调参。</p>
+<ul>
+<li>gamma 越大，支持向量越少，gamma 越小，支持向量越多。 而支持向量的个数影响训练和预测的速度。 </li>
+<li>C 越高，容易过拟合。C 越小，容易欠拟合。</li>
+</ul>
+<h1 id="结束了吗？"><a href="#结束了吗？" class="headerlink" title="结束了吗？"></a>结束了吗？</h1><p>以上只是对于机器学习中一些常见概念性问题的解释，除此之外，机器学习还囊括大量的分类、回归、聚类、降维算法，以及目前非常火的深度学习。因此，个人认为，除了以上基础知识，一个好的机器学习算法/数据挖掘 工程师还应该掌握以下知识（可以当作春招秋招复习的大纲）：</p>
+<h2 id="统计机器学习算法"><a href="#统计机器学习算法" class="headerlink" title="统计机器学习算法"></a>统计机器学习算法</h2><h3 id="分类算法"><a href="#分类算法" class="headerlink" title="分类算法"></a>分类算法</h3><ul>
+<li>逻辑回归(LR)</li>
+<li>感知机 </li>
+<li>支持向量机(SVM)</li>
+<li>人工神经网络(ANN)</li>
+<li>决策树(DT，包括ID3, C4.5, CART)</li>
+<li>随机森林(RF)</li>
+<li>Adaboost</li>
+<li>GBDT</li>
+<li>XGBoost</li>
+<li>LightGBM</li>
+<li>CatBoost</li>
+<li>朴素贝叶斯(NB)</li>
+<li>最近邻(k-NN)</li>
+<li>最大熵</li>
+</ul>
+<h3 id="回归算法"><a href="#回归算法" class="headerlink" title="回归算法"></a>回归算法</h3><ul>
+<li>线性回归</li>
+<li>套索回归</li>
+<li>岭回归</li>
+<li>弹性网回归</li>
+<li>支持向量回归(SVR)</li>
+<li>树回归 （决策树、随机森林、Adaboost、GBDT、XGBoost、LightGBM等以DT为基模型的回归）</li>
+</ul>
+<h3 id="聚类算法"><a href="#聚类算法" class="headerlink" title="聚类算法"></a>聚类算法</h3><ul>
+<li>k-Means</li>
+<li>k-Medoids</li>
+<li>BIRCH</li>
+<li>层次聚类</li>
+<li>DBSCAN</li>
+<li>均值漂移分割 Meanshift</li>
+<li>谱聚类</li>
+</ul>
+<h3 id="特征选择-降维算法"><a href="#特征选择-降维算法" class="headerlink" title="特征选择/降维算法"></a>特征选择/降维算法</h3><ul>
+<li>主成分分析(PCA)</li>
+<li>独立成分分析(ICA)</li>
+<li>因子分解机(FM)</li>
+<li>奇异值分解(SVD)</li>
+<li>非负矩阵分解(NMF)</li>
+<li>潜在语义分析(LSA)</li>
+<li>概率潜在语义分析(pLSA)</li>
+<li>潜在狄利克雷分配(LDA)</li>
+<li>字典学习</li>
+</ul>
+<h3 id="概率图模型"><a href="#概率图模型" class="headerlink" title="概率图模型"></a>概率图模型</h3><ul>
+<li>隐马尔可夫(HMM)</li>
+<li>马尔可夫随机场</li>
+<li>马尔可夫链</li>
+<li>条件随机场(CRF)</li>
+</ul>
+<h2 id="其他算法"><a href="#其他算法" class="headerlink" title="其他算法"></a>其他算法</h2><ul>
+<li>卡尔曼滤波</li>
+<li>EM算法</li>
+<li>蚁群算法</li>
+<li>遗传算法</li>
+</ul>
+<h2 id="深度学习及计算机视觉"><a href="#深度学习及计算机视觉" class="headerlink" title="深度学习及计算机视觉"></a>深度学习及计算机视觉</h2><ul>
+<li>Conv, TransposedConv, DilatedConv等卷积曾原理 </li>
+<li>Pooling, GlobalPooling, SPP, ASPP等池化层原理</li>
+<li>各激活函数的优缺点及适用场景</li>
+<li>SGD, PMSProp, Adam等优化算法的原理及特点</li>
+<li>不同任务选择什么样的损失函数</li>
+<li>AlexNet, VGGNet, GoogLeNet, ResNet, DenseNet等经典分类网络的结构</li>
+<li>FCN, SegNet, U-Net, DeepLabs, RefineNet, PSPNet等语义分割网络的结构</li>
+<li>YOLO, R-CNN, Fast R-CNN, Faster R-CNN, Mask R-CNN等目标检测网络结构</li>
+<li>GAN，风格迁移，领域适应等</li>
+<li>TensorFlow, Keras, PyTorch等深度学习框架</li>
+</ul>
+<h2 id="推荐系统"><a href="#推荐系统" class="headerlink" title="推荐系统"></a>推荐系统</h2><ul>
+<li>协同过滤</li>
+<li>itemBasedCF</li>
+<li>userBasedCF</li>
+<li>冷启动</li>
+<li>SVD（各种变形），FM，LFM等</li>
+</ul>
+<h2 id="自然语言处理"><a href="#自然语言处理" class="headerlink" title="自然语言处理"></a>自然语言处理</h2><ul>
+<li>Word2Vec</li>
+<li>RNN</li>
+<li>LSTM</li>
+<li>GRU</li>
+<li>TF-IDF</li>
+<li>TextRank</li>
+<li>SimHash</li>
+</ul>
+<h2 id="数学"><a href="#数学" class="headerlink" title="数学"></a>数学</h2><ul>
+<li>高数：泰勒展开，偏导</li>
+<li>概率论与数理统计</li>
+<li>线性代数</li>
+</ul>
+<h2 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h2><ul>
+<li>数据结构（线性表、链表、队列、堆栈）</li>
+<li>排序算法</li>
+<li>查找算法</li>
+<li>二叉树的遍历</li>
+<li>图的遍历</li>
+<li>最短路径算法</li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li>Python/Java/C++等至少精通一门语言</li>
+<li>网络数据采集（Crawl）</li>
+<li>数据可视化</li>
+<li>MySQL/MongoDB等数据库</li>
+<li>刷LeetCode或者牛客网的题，尤其是动态规划和字符串处理</li>
+</ul>
+<blockquote>
+<p>以上我也并非完全掌握，需要不断学习，一起加油:smile::smile::smile:!</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/04/09/Python代码规范/" rel="next" title="Python 代码规范">
+                <i class="fa fa-chevron-left"></i> Python 代码规范
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/05/05/MySQL笔记/" rel="prev" title="MySQL 笔记">
+                MySQL 笔记 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="liuph">
+            
+              <p class="site-author-name" itemprop="name">liuph</p>
+              <p class="site-description motion-element" itemprop="description">Machine Learning, Deep Learning, Spatiotemporal Data Mining</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/liuph0119" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liuph3@mail2.sysu.edu.cn" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#方差-偏差"><span class="nav-number">1.</span> <span class="nav-text">方差 / 偏差</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#过拟合-欠拟合"><span class="nav-number">2.</span> <span class="nav-text">过拟合 / 欠拟合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型评估"><span class="nav-number">3.</span> <span class="nav-text">模型评估</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Leave-one-out"><span class="nav-number">3.1.</span> <span class="nav-text">Leave one out</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hold-Out"><span class="nav-number">3.2.</span> <span class="nav-text">Hold Out</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K-Fold-Cross-Validation"><span class="nav-number">3.3.</span> <span class="nav-text">K-Fold Cross-Validation</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bootstrap"><span class="nav-number">3.4.</span> <span class="nav-text">Bootstrap</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调参-模型上线"><span class="nav-number">3.5.</span> <span class="nav-text">调参 / 模型上线</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#度量指标"><span class="nav-number">4.</span> <span class="nav-text">度量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#分类模型度量指标"><span class="nav-number">4.1.</span> <span class="nav-text">分类模型度量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#精确率-查准率（Precision）"><span class="nav-number">4.1.1.</span> <span class="nav-text">精确率/查准率（Precision）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#召回率-查全率-Recall"><span class="nav-number">4.1.2.</span> <span class="nav-text">召回率/查全率 (Recall)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F1-Score"><span class="nav-number">4.1.3.</span> <span class="nav-text">F1-Score</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fβ-Score"><span class="nav-number">4.1.4.</span> <span class="nav-text">Fβ-Score</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#灵敏度-true-positive-rate-TPR"><span class="nav-number">4.1.5.</span> <span class="nav-text">灵敏度(true positive rate, TPR)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特异度-false-positive-rate-FPR"><span class="nav-number">4.1.6.</span> <span class="nav-text">特异度(false positive rate, FPR)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ROC-amp-AUC"><span class="nav-number">4.1.7.</span> <span class="nav-text">ROC &amp; AUC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kappa系数"><span class="nav-number">4.1.8.</span> <span class="nav-text">Kappa系数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#回归模型度量指标"><span class="nav-number">4.2.</span> <span class="nav-text">回归模型度量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-Squared-Error-MSE"><span class="nav-number">4.2.1.</span> <span class="nav-text">Mean Squared Error (MSE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-Squared-Log-Error-MSLE"><span class="nav-number">4.2.2.</span> <span class="nav-text">Mean Squared Log Error (MSLE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mean-Absolute-Error-MAE"><span class="nav-number">4.2.3.</span> <span class="nav-text">Mean Absolute Error (MAE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Median-Absolute-Error-MedAE"><span class="nav-number">4.2.4.</span> <span class="nav-text">Median Absolute Error (MedAE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Root-Mean-Square-Error-RMSE"><span class="nav-number">4.2.5.</span> <span class="nav-text">Root Mean Square Error (RMSE)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#R-2"><span class="nav-number">4.2.6.</span> <span class="nav-text">$R^2$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Explained-Variance-Score-EV"><span class="nav-number">4.2.7.</span> <span class="nav-text">Explained Variance Score (EV)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pearson-相关系数"><span class="nav-number">4.2.8.</span> <span class="nav-text">Pearson 相关系数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#聚类模型度量指标"><span class="nav-number">4.3.</span> <span class="nav-text">聚类模型度量指标</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard-Coefficient-JC"><span class="nav-number">4.3.1.</span> <span class="nav-text">Jaccard Coefficient (JC)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Fowlkes-and-Mallows-Index-FMI"><span class="nav-number">4.3.2.</span> <span class="nav-text">Fowlkes and Mallows Index (FMI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Rand-Index-RI"><span class="nav-number">4.3.3.</span> <span class="nav-text">Rand Index (RI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Davies-Bouldin-Index-DBI"><span class="nav-number">4.3.4.</span> <span class="nav-text">Davies-Bouldin Index (DBI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Dunn-Index-DI"><span class="nav-number">4.3.5.</span> <span class="nav-text">Dunn Index (DI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Adjusted-Rand-index-ARI"><span class="nav-number">4.3.6.</span> <span class="nav-text">Adjusted Rand index (ARI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Mutual-Information-MI"><span class="nav-number">4.3.7.</span> <span class="nav-text">Mutual Information (MI)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同质性-完整性-和-V-measure"><span class="nav-number">4.3.8.</span> <span class="nav-text">同质性, 完整性 和 V-measure</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Silhouette-Coefficient"><span class="nav-number">4.3.9.</span> <span class="nav-text">Silhouette Coefficient</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Calinski-Harabaz-Index"><span class="nav-number">4.3.10.</span> <span class="nav-text">Calinski-Harabaz Index</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number">4.4.</span> <span class="nav-text">损失函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0-1-损失函数"><span class="nav-number">4.4.1.</span> <span class="nav-text">0/1 损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#平方损失函数"><span class="nav-number">4.4.2.</span> <span class="nav-text">平方损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绝对损失函数"><span class="nav-number">4.4.3.</span> <span class="nav-text">绝对损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#交叉熵损失函数"><span class="nav-number">4.4.4.</span> <span class="nav-text">交叉熵损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#对数似然损失函数"><span class="nav-number">4.4.5.</span> <span class="nav-text">对数似然损失函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相对熵-KL散度"><span class="nav-number">4.4.6.</span> <span class="nav-text">相对熵/KL散度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#距离度量"><span class="nav-number">4.5.</span> <span class="nav-text">距离度量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#欧式距离"><span class="nav-number">4.5.1.</span> <span class="nav-text">欧式距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#曼哈顿距离"><span class="nav-number">4.5.2.</span> <span class="nav-text">曼哈顿距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#切比雪夫距离"><span class="nav-number">4.5.3.</span> <span class="nav-text">切比雪夫距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#闵科夫斯基距离"><span class="nav-number">4.5.4.</span> <span class="nav-text">闵科夫斯基距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化欧式距离"><span class="nav-number">4.5.5.</span> <span class="nav-text">标准化欧式距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#马氏距离"><span class="nav-number">4.5.6.</span> <span class="nav-text">马氏距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#余弦距离"><span class="nav-number">4.5.7.</span> <span class="nav-text">余弦距离</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Jaccard相似系数"><span class="nav-number">4.5.8.</span> <span class="nav-text">Jaccard相似系数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pearson相关系数-协方差-标准差"><span class="nav-number">4.5.9.</span> <span class="nav-text">Pearson相关系数(协方差/标准差)</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#数据预处理"><span class="nav-number">5.</span> <span class="nav-text">数据预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#数据缺失处理"><span class="nav-number">5.1.</span> <span class="nav-text">数据缺失处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#特征中缺失值较多"><span class="nav-number">5.1.1.</span> <span class="nav-text">特征中缺失值较多</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征中缺失值较少"><span class="nav-number">5.1.2.</span> <span class="nav-text">特征中缺失值较少</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Standardization，Scaling"><span class="nav-number">5.2.</span> <span class="nav-text">Standardization，Scaling</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#除以L2范数"><span class="nav-number">5.2.1.</span> <span class="nav-text">除以L2范数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#标准化"><span class="nav-number">5.2.2.</span> <span class="nav-text">标准化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#归一化"><span class="nav-number">5.2.3.</span> <span class="nav-text">归一化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#异常值较多的数据标准化"><span class="nav-number">5.2.4.</span> <span class="nav-text">异常值较多的数据标准化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非线性变换"><span class="nav-number">5.3.</span> <span class="nav-text">非线性变换</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#均匀分布变换"><span class="nav-number">5.3.1.</span> <span class="nav-text">均匀分布变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#高斯分布变换"><span class="nav-number">5.3.2.</span> <span class="nav-text">高斯分布变换</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Normalization"><span class="nav-number">5.4.</span> <span class="nav-text">Normalization</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类别编码"><span class="nav-number">5.5.</span> <span class="nav-text">类别编码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Ordinal编码"><span class="nav-number">5.5.1.</span> <span class="nav-text">Ordinal编码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#One-hot-编码"><span class="nav-number">5.5.2.</span> <span class="nav-text">One-hot 编码</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#离散化-Discretization"><span class="nav-number">5.6.</span> <span class="nav-text">离散化 Discretization</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#K-Bin"><span class="nav-number">5.6.1.</span> <span class="nav-text">K-Bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二值化"><span class="nav-number">5.6.2.</span> <span class="nav-text">二值化</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#类别不平衡情况"><span class="nav-number">6.</span> <span class="nav-text">类别不平衡情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#特征选择"><span class="nav-number">7.</span> <span class="nav-text">特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#过滤-filter-特征选择"><span class="nav-number">7.1.</span> <span class="nav-text">过滤(filter)特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Pearson-相关系数-1"><span class="nav-number">7.1.1.</span> <span class="nav-text">Pearson 相关系数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#卡方检验"><span class="nav-number">7.1.2.</span> <span class="nav-text">卡方检验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#互信息和最大信息系数"><span class="nav-number">7.1.3.</span> <span class="nav-text">互信息和最大信息系数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#距离相关系数"><span class="nav-number">7.1.4.</span> <span class="nav-text">距离相关系数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方差选择法"><span class="nav-number">7.1.5.</span> <span class="nav-text">方差选择法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#包装-wrapper-特征选择"><span class="nav-number">7.2.</span> <span class="nav-text">包装(wrapper)特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#前向搜索"><span class="nav-number">7.2.1.</span> <span class="nav-text">前向搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#后向搜索"><span class="nav-number">7.2.2.</span> <span class="nav-text">后向搜索</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#递归特征消除法"><span class="nav-number">7.2.3.</span> <span class="nav-text">递归特征消除法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌入-embed-特征选择"><span class="nav-number">7.3.</span> <span class="nav-text">嵌入(embed)特征选择</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#基于惩罚项的特征选择"><span class="nav-number">7.3.1.</span> <span class="nav-text">基于惩罚项的特征选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#基于学习模型的特征排序"><span class="nav-number">7.3.2.</span> <span class="nav-text">基于学习模型的特征排序</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#多类分类情况"><span class="nav-number">8.</span> <span class="nav-text">多类分类情况</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#模型融合"><span class="nav-number">9.</span> <span class="nav-text">模型融合</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#L1和L2"><span class="nav-number">10.</span> <span class="nav-text">L1和L2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#L1为什么可以得到稀疏解？"><span class="nav-number">10.1.</span> <span class="nav-text">L1为什么可以得到稀疏解？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L2为什么会让参数趋于平滑和较小值"><span class="nav-number">10.2.</span> <span class="nav-text">L2为什么会让参数趋于平滑和较小值?</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#L1优化方法"><span class="nav-number">10.3.</span> <span class="nav-text">L1优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线性回归-岭回归-Lasso回归-弹性网回归"><span class="nav-number">10.4.</span> <span class="nav-text">线性回归/岭回归/Lasso回归/弹性网回归</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#生成模型和判别模型"><span class="nav-number">11.</span> <span class="nav-text">生成模型和判别模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#生成模型"><span class="nav-number">11.1.</span> <span class="nav-text">生成模型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#判别模型"><span class="nav-number">11.2.</span> <span class="nav-text">判别模型</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#最优化算法"><span class="nav-number">12.</span> <span class="nav-text">最优化算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#批量梯度下降-（Batch-Gradient-Descent）"><span class="nav-number">12.1.</span> <span class="nav-text">批量梯度下降 （Batch Gradient Descent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#随机梯度下降法（Stochastic-Gradient-Descent）"><span class="nav-number">12.2.</span> <span class="nav-text">随机梯度下降法（Stochastic Gradient Descent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#小批量随机梯度下降-（Mini-batch-Gradient-Descent）"><span class="nav-number">12.3.</span> <span class="nav-text">小批量随机梯度下降 （Mini-batch Gradient Descent）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最小二乘法"><span class="nav-number">12.4.</span> <span class="nav-text">最小二乘法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#牛顿法（TODO）"><span class="nav-number">12.5.</span> <span class="nav-text">牛顿法（TODO）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共轭梯度法（TODO）"><span class="nav-number">12.6.</span> <span class="nav-text">共轭梯度法（TODO）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降、最小二乘法、牛顿法、拟牛顿法的对比"><span class="nav-number">12.7.</span> <span class="nav-text">梯度下降、最小二乘法、牛顿法、拟牛顿法的对比</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#无偏估计-参数估计方法"><span class="nav-number">13.</span> <span class="nav-text">无偏估计/参数估计方法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#频率学派和贝叶斯学派"><span class="nav-number">13.1.</span> <span class="nav-text">频率学派和贝叶斯学派</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#频率学派"><span class="nav-number">13.1.1.</span> <span class="nav-text">频率学派</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#贝叶斯学派"><span class="nav-number">13.1.2.</span> <span class="nav-text">贝叶斯学派</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大似然估计-MLE"><span class="nav-number">13.2.</span> <span class="nav-text">最大似然估计 MLE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最大后验概率估计-MAP"><span class="nav-number">13.3.</span> <span class="nav-text">最大后验概率估计 MAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#EM算法"><span class="nav-number">13.4.</span> <span class="nav-text">EM算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#无偏估计"><span class="nav-number">13.5.</span> <span class="nav-text">无偏估计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#常见的核函数"><span class="nav-number">14.</span> <span class="nav-text">常见的核函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#常见核函数"><span class="nav-number">14.1.</span> <span class="nav-text">常见核函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何选择核函数"><span class="nav-number">14.2.</span> <span class="nav-text">如何选择核函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#如何调参"><span class="nav-number">14.3.</span> <span class="nav-text">如何调参</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#结束了吗？"><span class="nav-number">15.</span> <span class="nav-text">结束了吗？</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#统计机器学习算法"><span class="nav-number">15.1.</span> <span class="nav-text">统计机器学习算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#分类算法"><span class="nav-number">15.1.1.</span> <span class="nav-text">分类算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#回归算法"><span class="nav-number">15.1.2.</span> <span class="nav-text">回归算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#聚类算法"><span class="nav-number">15.1.3.</span> <span class="nav-text">聚类算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#特征选择-降维算法"><span class="nav-number">15.1.4.</span> <span class="nav-text">特征选择/降维算法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#概率图模型"><span class="nav-number">15.1.5.</span> <span class="nav-text">概率图模型</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他算法"><span class="nav-number">15.2.</span> <span class="nav-text">其他算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度学习及计算机视觉"><span class="nav-number">15.3.</span> <span class="nav-text">深度学习及计算机视觉</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#推荐系统"><span class="nav-number">15.4.</span> <span class="nav-text">推荐系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#自然语言处理"><span class="nav-number">15.5.</span> <span class="nav-text">自然语言处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数学"><span class="nav-number">15.6.</span> <span class="nav-text">数学</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据结构"><span class="nav-number">15.7.</span> <span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#其他"><span class="nav-number">15.8.</span> <span class="nav-text">其他</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuph</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://liuph0119.github.io/2019/04/10/机器学习-基础/';
+          this.page.identifier = '2019/04/10/机器学习-基础/';
+          this.page.title = '机器学习：基础';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz',
+        appKey: 'vJlPTJMK5wNXplzp2gavBJSu',
+        placeholder: 'I have something to say',
+        avatar:'retro',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz", "vJlPTJMK5wNXplzp2gavBJSu");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
