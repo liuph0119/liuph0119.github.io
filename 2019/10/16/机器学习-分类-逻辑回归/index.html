@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="机器学习,Python,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="逻辑回归算法的推导和实践。">
+<meta name="keywords" content="机器学习,Python">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习：分类算法(1)逻辑回归">
+<meta property="og:url" content="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/index.html">
+<meta property="og:site_name" content="liuph&#39;s notes">
+<meta property="og:description" content="逻辑回归算法的推导和实践。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-10-16_08-44-43.png">
+<meta property="og:image" content="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-01-07_14-08-46.png">
+<meta property="og:image" content="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-10-16_09-01-51.png">
+<meta property="og:updated_time" content="2019-10-16T01:36:11.506Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习：分类算法(1)逻辑回归">
+<meta name="twitter:description" content="逻辑回归算法的推导和实践。">
+<meta name="twitter:image" content="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-10-16_08-44-43.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/">
+
+
+
+
+
+  <title>机器学习：分类算法(1)逻辑回归 | liuph's notes</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?197396c72319cffd8dab216e4f45a682";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">liuph's notes</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Good memory than rotten written.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="liuph">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="liuph's notes">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">机器学习：分类算法(1)逻辑回归</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-10-16T08:39:00+08:00">
+                2019-10-16
+              </time>
+            
+
+            
+              <span class="post-meta-divider">|</span>
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-check-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">更新于&#58;</span>
+              
+              <time title="更新于" itemprop="dateModified" datetime="2019-10-16T09:36:11+08:00">
+                2019-10-16
+              </time>
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/机器学习/" itemprop="url" rel="index">
+                    <span itemprop="name">机器学习</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/10/16/机器学习-分类-逻辑回归/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2019/10/16/机器学习-分类-逻辑回归/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2019/10/16/机器学习-分类-逻辑回归/" class="leancloud_visitors" data-flag-title="机器学习：分类算法(1)逻辑回归">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.3k 字
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10 分钟
+                </span>
+              
+            </div>
+          
+
+          
+              <div class="post-description">
+                  逻辑回归算法的推导和实践。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="算法原理"><a href="#算法原理" class="headerlink" title="算法原理"></a>算法原理</h1><p>Logistic回归与多元线性回归实际上有很多相同之处，最大的区别就在于它们的因变量不同，其他的基本都差不多。正是因为如此，这两种回归可以归于同一个家族，即广义线性模型（generalized linear model）。</p>
+<p>这一家族中的模型形式基本上都差不多，不同的就是因变量不同。</p>
+<ul>
+<li>如果因变量是连续的，就是多元线性回归；</li>
+<li>如果是二项分布，就是Logistic回归；</li>
+<li>如果是Poisson分布（$P(X=x)=\frac{m^x}{x!}e^{-m}$，平均为m时取值为x的概率），就是Poisson回归；</li>
+<li>如果是负二项分布，就是负二项回归。</li>
+</ul>
+<p>Logistic回归的因变量可以是二分类的，也可以是多分类的，但是二分类的更为常用，也更加容易解释。所以实际中最常用的就是二分类的Logistic回归。</p>
+<p>逻辑回归其实是在线性回归的基础上，加上一层逻辑函数 Sigmoid 映射，将预测值限定为(0,1)间。 </p>
+<p>Sigmoid 函数连续可微分。在z=0时，十分敏感，在z&gt;&gt;0或z&lt;&lt;0处，都不敏感。</p>
+<p><img src="/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-10-16_08-44-43.png" alt="Sigmoid Function"></p>
+<h1 id="公式推导"><a href="#公式推导" class="headerlink" title="公式推导"></a>公式推导</h1><h2 id="逻辑回归定义"><a href="#逻辑回归定义" class="headerlink" title="逻辑回归定义"></a>逻辑回归定义</h2><p>假设样本数目为<code>m</code>，样本特征维度为<code>n</code>，$x$的形状为<code>(m, n)</code>，$y$的形状为<code>(m,)</code>，$y$的取值为0或者1。</p>
+<p>对应的，$w$的形状为<code>(n, 1)</code>，$b$形状为<code>(1,1)</code>。</p>
+<p>逻辑回归的初始抽象为下式，对于$x^{(i)}$的每个特征$x_j^{(i)}$，求解一个权重$w_j$，以及一个常数项（截距）$b$，使得经过Sigmoid变换得到的加权预测值与真实值尽可能相等。</p>
+<script type="math/tex; mode=display">
+y=\sigma (w^Tx+b)</script><script type="math/tex; mode=display">
+\sigma(z) = \frac{1}{1+e^{-z}}</script><p>通过将$w$和$b$合并为$\theta$，再将以上两个式子代入，有：</p>
+<script type="math/tex; mode=display">
+y=\sigma(\theta^Tx)=\frac{1}{1+e^{-\theta ^ T x}}</script><p>该预测函数表示分类结果为1时的概率。因此对于输入点<code>x</code>，分类结果为类别1和类别0的概率分别为如下公式：</p>
+<script type="math/tex; mode=display">
+p(y=1|x;\theta)=h_{\theta}(x)</script><script type="math/tex; mode=display">
+p(y=0|x;\theta)=1-h_{\theta}(x)</script><h2 id="损失函数"><a href="#损失函数" class="headerlink" title="损失函数"></a>损失函数</h2><p>对于一组数据集，样本数据<code>x={x1, x2, … , xm}</code>对应的观测值为<code>y={y1, y2, … , ym}</code>。那么可以知道样本<code>{x1, x2, … , xm}</code>取到观测值<code>{y1,y2,...,ym}</code>的概率为:</p>
+<script type="math/tex; mode=display">
+L(\theta)=L(y_1,y_2,...,y_m;\theta)=\prod_{i=1}^{m}p(y_i;\theta)</script><p>这一概率随 $\theta$的取值而变化，它是 $\theta$的函数，称 <script type="math/tex">L(\theta)</script>为样本的似然函数。</p>
+<p>而某个样本 $x_i$取值为 $y_i$的后验概率如下形式：</p>
+<script type="math/tex; mode=display">
+p(y_i|x_i;\theta)=(h_\theta(x_i))^{y_i}·(1-(h_\theta(x_i)))^{1-y_i}</script><p>假设分类器分类足够准确，此时对于一个样本，如果它是属于1类，分类器求出的属于1类的概率应该尽可能大，即$p(y=1lx)$尽可能接近1；如果它是0类，分类器求出的属于0类的概率应该尽可能大，即$p(y=0lx)$尽可能接近1。通过上述公式对二类分类的情况分析，可知我们的目的是求取参数 $\theta $，使得 $L(\theta) $对观测值的分类结果尽可能取最大值。</p>
+<p>对其取对数，可得到以下公式，即我们要求取 $\theta $，使得下式在样本数据上取值最大：</p>
+<script type="math/tex; mode=display">
+l(\theta)=log(L(\theta))=\sum_{i=1}^m(y_ilog(h_\theta(x_i)) + (1-y_i)log(1-h_\theta(x_i)))</script><p>然而实际上我们定义的损失函数是求最小值，于是，很自然的，我们想到对式子加一个负号，再取平均值，就变成了求最小值的问题，这就得到了逻辑回归中的损失函数，优化使其最小：</p>
+<script type="math/tex; mode=display">
+J(x;\theta) = -\frac{1}{m}\sum_{i=1}^{m}(y_ilog(h_\theta(x_i)) + (1-y_i)log(1-h_\theta(x_i)))</script><p>定义 $y’=h_{\theta}(x)$，那么以上式子简化为</p>
+<script type="math/tex; mode=display">
+J=-(y\mathrm {log} y' + (1-y)\mathrm{log}(1-y'))</script><h2 id="梯度下降"><a href="#梯度下降" class="headerlink" title="梯度下降"></a>梯度下降</h2><p>对应参数$\theta_j$的求导为：</p>
+<script type="math/tex; mode=display">
+\begin{equation}\begin{split}\frac{\partial J}{\partial \theta_j}
+&=-(\frac{y}{y'}-\frac{1-y}{1-y'})\times \frac{\partial y'}{\partial \theta_j} \\
+&=-(\frac{y}{y'}-\frac{1-y}{1-y'})\times\frac{\partial \sigma(\theta ^ Tx)}{\theta_j} \\
+&=-(\frac{y}{y'}-\frac{1-y}{1-y'})\times \sigma(\theta^Tx)(1-\sigma(\theta^Tx))\times \frac{\partial \theta^Tx}{\partial \theta_j}\\
+&= -(\frac{y}{y'}-\frac{1-y}{1-y'})\times y'(1-y')x_j\\
+&=-(y(1-y')-(1-y)y')x_j\\
+&=(y'-y)x_j
+\end{split}\end{equation}</script><p>第三步用到了Sigmoid函数的求导：</p>
+<script type="math/tex; mode=display">
+\frac{\partial \sigma}{\partial z} = \sigma(z)(1-\sigma(z))</script><p>第五步是通分再化简。</p>
+<p>最后通过梯度下降，更新参数 $\theta $：</p>
+<script type="math/tex; mode=display">
+\theta_j = \theta_j - \alpha(h_\theta(x^{(i)})-y^{(i)})x_j^{(i)}</script><h1 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h1><p>场景回归具有计算代价低、速度快、容易理解和实现的优点，但同时容易欠拟合、分类和回归的精度不高；其常采用AUC来评估。</p>
+<h2 id="多元逻辑回归"><a href="#多元逻辑回归" class="headerlink" title="多元逻辑回归"></a>多元逻辑回归</h2><p>二元逻辑回归可以一般化为多元逻辑回归用来训练和预测多分类问题。对于多分类问题，算法将会训练出一个多元逻辑回归模型， 它包含K-1个二元回归模型。给定一个数据点，K-1个模型都会运行，概率最大的类别将会被选为预测类别。具体可以参考<a href="https://github.com/endymecy/spark-ml-source-analysis/blob/master/%E5%88%86%E7%B1%BB%E5%92%8C%E5%9B%9E%E5%BD%92/%E7%BA%BF%E6%80%A7%E6%A8%A1%E5%9E%8B/%E9%80%BB%E8%BE%91%E5%9B%9E%E5%BD%92/logic-regression.md" target="_blank" rel="noopener">逻辑回归基础</a></p>
+<p><img src="/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-01-07_14-08-46.png" alt="multi-class logistic regression"></p>
+<h2 id="逻辑回归和SVM"><a href="#逻辑回归和SVM" class="headerlink" title="逻辑回归和SVM"></a>逻辑回归和SVM</h2><p>SVM的损失函数为： $ J=\frac{1}{m}\sum_{i=1}^{m}(1-y_i[w_0+x_i^Tw_1])^++\lambda||w_1||/2  $</p>
+<p>LR的损失函数为： $J=\frac{1}{m}\sum_{i=1}^{m}-log(g(y_i[w_0+x_i^Tw_1])+\lambda||w_1||/2) $</p>
+<p>其中 $g(z) $为 $sigmoid $函数。</p>
+<p>将两者统一起来，即 $J=\frac{1}{m}\sum_{i=1}^{m}Loss(y_i[w_0+x_i^Tw1]) + \lambda||w_1||/2 $</p>
+<p>也就是说，他们得主要区别是逻辑回归采用得是log loss，而svm采用得是hinge loss即 $E(z) = max(0, 1-z) $</p>
+<p>SVM损失函数为 $Loss(z)=(1-z)^+ $</p>
+<p>LR损失函数为 $Loss(z)=log(1+e^{-z}) $</p>
+<p><img src="/2019/10/16/机器学习-分类-逻辑回归/Snipaste_2019-10-16_09-01-51.png" alt="SVM&amp;LR Loss"></p>
+<p>其实，这两个损失函数的<strong>目的都是增加对分类影响较大的数据点的权重，减少与分类关系较小的数据点的权重</strong>。</p>
+<p>SVM的处理方法是只考虑 <strong>support vectors</strong>，也就是和分类最相关的少数点，去学习分类器。</p>
+<p>而逻辑回归通过非线性映射，大大减小了离分类平面较远的点的权重，相对提升了与分类最相关的数据点的权重，两者的根本目的都是一样的。</p>
+<h1 id="Python-实现"><a href="#Python-实现" class="headerlink" title="Python 实现"></a>Python 实现</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- utf-8 -*-</span></span><br><span class="line"><span class="comment"># source: https://github.com/liuph0119/KnowledgeCloud/blob/master/Code/python/algorithms/MachineLearning/linear_models/logistic_regression.py</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> Code.python.algorithms.MachineLearning.utils.utils <span class="keyword">import</span> mini_batches, log_msg</span><br><span class="line"><span class="keyword">from</span> Code.python.algorithms.MachineLearning.metrics.losses <span class="keyword">import</span> neg_log_loss, neg_log_loss_grad, \</span><br><span class="line">    l1norm_loss, l1norm_loss_grad, l2norm_loss, l2norm_loss_grad</span><br><span class="line"><span class="keyword">from</span> Code.python.algorithms.MachineLearning.metrics.scores <span class="keyword">import</span> accuracy</span><br><span class="line"><span class="keyword">from</span> Code.python.algorithms.MachineLearning.utils.preprocess <span class="keyword">import</span> Standardization</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets.samples_generator <span class="keyword">import</span> make_classification</span><br><span class="line"><span class="keyword">from</span> sklearn.datasets <span class="keyword">import</span> load_breast_cancer</span><br><span class="line"><span class="keyword">from</span> sklearn.model_selection <span class="keyword">import</span> train_test_split</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">LogisticRegression</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, penalty=<span class="string">'l2'</span>, alpha=<span class="number">0.01</span>, fit_intercept=True)</span>:</span></span><br><span class="line">        <span class="string">""" initialize model parameters.</span></span><br><span class="line"><span class="string">        :param penalty: string, default 'l2'.</span></span><br><span class="line"><span class="string">            regularization functions.</span></span><br><span class="line"><span class="string">        :param alpha: float, default 0.01.</span></span><br><span class="line"><span class="string">            regularization parameter.</span></span><br><span class="line"><span class="string">        :param fit_intercept: bool, default True.</span></span><br><span class="line"><span class="string">            whether to fit intercept.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        self.w = <span class="literal">None</span></span><br><span class="line">        self.coef_ = <span class="literal">None</span></span><br><span class="line">        self.intercept_ = <span class="literal">None</span></span><br><span class="line">        self.penalty = penalty</span><br><span class="line">        self.alpha = alpha</span><br><span class="line">        self.fit_intercept = fit_intercept</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">_sigmoid</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        <span class="string">""" sigmoid function</span></span><br><span class="line"><span class="string">        :param x: array</span></span><br><span class="line"><span class="string">        :return: array</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span> / (<span class="number">1</span> + np.exp(-x))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">fit</span><span class="params">(self, x, y, learning_rate=<span class="number">0.001</span>, batch_size=<span class="number">256</span>, n_epochs=<span class="number">100</span>, verbose=<span class="number">2</span>)</span>:</span></span><br><span class="line">        <span class="string">""" fit model via mini-batch gradient descent</span></span><br><span class="line"><span class="string">            y = xw</span></span><br><span class="line"><span class="string">            loss = 1/2 * (y' - y) ^ 2 = 1/2 * (xw - y) ^ 2</span></span><br><span class="line"><span class="string">            grad = (xw - y) * x.T</span></span><br><span class="line"><span class="string">        :param x: array of shape '(n_sample, n_features)'.</span></span><br><span class="line"><span class="string">            training features.</span></span><br><span class="line"><span class="string">        :param y: array of shape '(n_samples, 1)'.</span></span><br><span class="line"><span class="string">            training labels.</span></span><br><span class="line"><span class="string">        :param learning_rate: float, default 1e-3.</span></span><br><span class="line"><span class="string">            learning rate of gradient descent.</span></span><br><span class="line"><span class="string">        :param batch_size: int, default 256.</span></span><br><span class="line"><span class="string">            batch size.</span></span><br><span class="line"><span class="string">        :param n_epochs: int, default 1000.</span></span><br><span class="line"><span class="string">            number of training epochs.</span></span><br><span class="line"><span class="string">        :param verbose: int, default 1.</span></span><br><span class="line"><span class="string">            whether to print log, '1' for printing while '2' for not printing.</span></span><br><span class="line"><span class="string">        :return: None.</span></span><br><span class="line"><span class="string">        """</span></span><br><span class="line">        n_samples, n_features = x.shape[<span class="number">0</span>], x.shape[<span class="number">1</span>]</span><br><span class="line">        batch_size = n_samples <span class="keyword">if</span> batch_size == <span class="number">-1</span> <span class="keyword">else</span> batch_size</span><br><span class="line">        <span class="keyword">if</span> self.fit_intercept:</span><br><span class="line">            x = np.c_[np.ones(n_samples), x]</span><br><span class="line">            n_features += <span class="number">1</span></span><br><span class="line">        self.w = np.random.rand(n_features) * <span class="number">0.001</span></span><br><span class="line"></span><br><span class="line">        loss = np.inf</span><br><span class="line">        <span class="keyword">for</span> i <span class="keyword">in</span> range(<span class="number">1</span>, n_epochs + <span class="number">1</span>):</span><br><span class="line">            data_iter, _ = mini_batches(x, batch_size, shuffle=<span class="literal">True</span>)</span><br><span class="line">            _iter = <span class="number">1</span></span><br><span class="line">            <span class="keyword">for</span> bc_idx <span class="keyword">in</span> data_iter:</span><br><span class="line">                bc_x, bc_y = x[bc_idx], y[bc_idx]</span><br><span class="line">                bc_h = self._sigmoid(np.dot(bc_x, self.w))</span><br><span class="line">                loss, grad = neg_log_loss(bc_y, bc_h), neg_log_loss_grad(bc_y, bc_h, bc_x)</span><br><span class="line">                penalty_loss = l1norm_loss(self.w) <span class="keyword">if</span> self.penalty == <span class="string">'l1'</span> <span class="keyword">else</span> l2norm_loss(self.w)</span><br><span class="line">                penalty_grad = l1norm_loss_grad(self.w) <span class="keyword">if</span> self.penalty == <span class="string">'l1'</span> <span class="keyword">else</span> l2norm_loss_grad(self.w)</span><br><span class="line">                loss += self.alpha * penalty_loss</span><br><span class="line">                grad += self.alpha * penalty_grad</span><br><span class="line">                self.w = self.w - learning_rate * grad</span><br><span class="line">                _iter += <span class="number">1</span></span><br><span class="line">                <span class="keyword">if</span> verbose == <span class="number">1</span>:</span><br><span class="line">                    log_msg(<span class="string">'# epoch &#123;&#125; iter &#123;&#125;: loss=&#123;:.4f&#125;'</span>.format(i, _iter, loss))</span><br><span class="line">            <span class="keyword">if</span> verbose == <span class="number">2</span>:</span><br><span class="line">                log_msg(<span class="string">'# epoch &#123;&#125;: loss=&#123;:.4f&#125;'</span>.format(i, loss))</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> self.fit_intercept:</span><br><span class="line">            self.coef_ = self.w[<span class="number">1</span>:]</span><br><span class="line">            self.intercept_ = self.w[<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">predict</span><span class="params">(self, x)</span>:</span></span><br><span class="line">        n_samples = x.shape[<span class="number">0</span>]</span><br><span class="line">        <span class="keyword">if</span> self.fit_intercept:</span><br><span class="line">            x = np.c_[np.ones(n_samples), x]</span><br><span class="line">        <span class="keyword">return</span> self._sigmoid(np.dot(x, self.w))</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">evaluate</span><span class="params">(self, x, y)</span>:</span></span><br><span class="line">        preds = self.predict(x)</span><br><span class="line">        preds_cls = np.where(preds &gt;= <span class="number">0.5</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> &#123;</span><br><span class="line">            <span class="string">'neg_log'</span>: neg_log_loss(y, preds),</span><br><span class="line">            <span class="string">'accuracy'</span>: accuracy(y, preds_cls)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    <span class="comment"># x, y = make_classification(n_samples=1000, n_features=5, n_classes=2, random_state=0)</span></span><br><span class="line">    dataset = load_breast_cancer()</span><br><span class="line">    x, y = dataset.data, dataset.target</span><br><span class="line">    x = Standardization().fit_transform(x)  <span class="comment"># feature standardization</span></span><br><span class="line">    train_x, val_x, train_y, val_y = train_test_split(x, y, train_size=<span class="number">0.8</span>, random_state=<span class="number">0</span>)</span><br><span class="line">    lm = LogisticRegression(penalty=<span class="string">'l2'</span>, alpha=<span class="number">0.0001</span>, fit_intercept=<span class="literal">True</span>)</span><br><span class="line">    lm.fit(train_x, train_y, batch_size=<span class="number">256</span>, learning_rate=<span class="number">1e-1</span>, n_epochs=<span class="number">1000</span>, verbose=<span class="number">0</span>)</span><br><span class="line">    print(lm.evaluate(val_x, val_y))</span><br><span class="line">    print(lm.coef_, lm.intercept_)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;neg_log&apos;: 0.08890522978727333, &apos;accuracy&apos;: 0.9649122807017544&#125;</span><br><span class="line">[-0.45478431 -0.64234883 -0.44067522 -0.50760714 -0.29955039  0.24108883</span><br><span class="line"> -0.67537672 -0.81173429 -0.34771395  0.33409457 -1.31182764 -0.01518276</span><br><span class="line"> -0.95374527 -0.94939778  0.2999703   0.74118571  0.06980219 -0.19351303</span><br><span class="line">  0.25084997  0.82447949 -0.93439331 -1.07183487 -0.82462772 -0.90376259</span><br><span class="line"> -0.67492585 -0.12909415 -0.87817014 -1.04012189 -0.64792583 -0.38643453] 0.28201798017381163</span><br></pre></td></tr></table></figure>
+<h1 id="Scikit-learn-API"><a href="#Scikit-learn-API" class="headerlink" title="Scikit-learn API"></a>Scikit-learn API</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.linear_model <span class="keyword">import</span> LogisticRegression</span><br><span class="line">    lr = LogisticRegression(fit_intercept=<span class="literal">True</span>)</span><br><span class="line">    lr.fit(train_x, train_y)</span><br><span class="line">    preds = lr.predict_proba(val_x)[:, <span class="number">1</span>]</span><br><span class="line">    preds_cls = np.where(preds &gt;= <span class="number">0.5</span>, <span class="number">1</span>, <span class="number">0</span>)</span><br><span class="line">    metrics = &#123;</span><br><span class="line">        <span class="string">'neg_log'</span>: neg_log_loss(val_y, preds),</span><br><span class="line">        <span class="string">'accuracy'</span>: accuracy(val_y, preds_cls)</span><br><span class="line">    &#125;</span><br><span class="line">    print(metrics)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&apos;neg_log&apos;: 0.09145479629044562, &apos;accuracy&apos;: 0.9649122807017544&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
+          
+            <a href="/tags/Python/" rel="tag"># Python</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/10/14/机器学习-回归-线性回归/" rel="next" title="机器学习：回归算法(1)线性回归">
+                <i class="fa fa-chevron-left"></i> 机器学习：回归算法(1)线性回归
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/avatar.jpg" alt="liuph">
+            
+              <p class="site-author-name" itemprop="name">liuph</p>
+              <p class="site-description motion-element" itemprop="description">Machine Learning, Deep Learning, Spatiotemporal Data Mining</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/liuph0119" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liuph3@mail2.sysu.edu.cn" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#算法原理"><span class="nav-number">1.</span> <span class="nav-text">算法原理</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#公式推导"><span class="nav-number">2.</span> <span class="nav-text">公式推导</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归定义"><span class="nav-number">2.1.</span> <span class="nav-text">逻辑回归定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#损失函数"><span class="nav-number">2.2.</span> <span class="nav-text">损失函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#梯度下降"><span class="nav-number">2.3.</span> <span class="nav-text">梯度下降</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#拓展"><span class="nav-number">3.</span> <span class="nav-text">拓展</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#多元逻辑回归"><span class="nav-number">3.1.</span> <span class="nav-text">多元逻辑回归</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逻辑回归和SVM"><span class="nav-number">3.2.</span> <span class="nav-text">逻辑回归和SVM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Python-实现"><span class="nav-number">4.</span> <span class="nav-text">Python 实现</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Scikit-learn-API"><span class="nav-number">5.</span> <span class="nav-text">Scikit-learn API</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">liuph</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'https://liuph0119.github.io/2019/10/16/机器学习-分类-逻辑回归/';
+          this.page.identifier = '2019/10/16/机器学习-分类-逻辑回归/';
+          this.page.title = '机器学习：分类算法(1)逻辑回归';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz',
+        appKey: 'vJlPTJMK5wNXplzp2gavBJSu',
+        placeholder: 'I have something to say',
+        avatar:'retro',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("ALyXiRULYgq0L6M2I6mej2l0-gzGzoHsz", "vJlPTJMK5wNXplzp2gavBJSu");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
